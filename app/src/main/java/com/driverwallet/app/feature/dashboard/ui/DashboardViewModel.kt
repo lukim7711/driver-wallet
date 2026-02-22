@@ -3,7 +3,7 @@ package com.driverwallet.app.feature.dashboard.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.driverwallet.app.feature.dashboard.domain.usecase.GetDashboardSummaryUseCase
-import com.driverwallet.app.shared.data.repository.TransactionRepository
+import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

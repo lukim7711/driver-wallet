@@ -7,7 +7,7 @@ import com.driverwallet.app.feature.dashboard.domain.model.DashboardData
 import com.driverwallet.app.feature.dashboard.domain.model.DueAlert
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
-import com.driverwallet.app.shared.data.repository.TransactionRepository
+import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit

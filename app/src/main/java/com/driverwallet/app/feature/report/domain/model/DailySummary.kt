@@ -1,13 +1,10 @@
+@file:Suppress("unused")
+
 package com.driverwallet.app.feature.report.domain.model
 
-import androidx.compose.runtime.Immutable
-
-@Immutable
-data class DailySummary(
-    val date: String,
-    val income: Long = 0L,
-    val expense: Long = 0L,
-    val transactionCount: Int = 0,
-) {
-    val profit: Long get() = income - expense
-}
+/**
+ * Typealias for backward compatibility.
+ * TODO: Update consumers to import from shared.domain.model directly,
+ *       then delete this file.
+ */
+typealias DailySummary = com.driverwallet.app.shared.domain.model.DailySummary
