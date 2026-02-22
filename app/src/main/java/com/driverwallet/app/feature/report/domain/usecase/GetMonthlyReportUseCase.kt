@@ -27,47 +27,27 @@ class GetMonthlyReportUseCase @Inject constructor(
             .filter { it.type == TransactionType.EXPENSE }
             .sumOf { it.amount }
 
-        val incomeByCategory = transactions
-            .filter { it.type == TransactionType.INCOME }
+        val totalAll = totalIncome + totalExpense
+        val categoryBreakdown = transactions
             .groupBy { it.category?.key ?: "unknown" }
             .map { (catKey, txns) ->
                 val total = txns.sumOf { it.amount }
                 val firstCat = txns.first().category
                 CategorySummary(
-                    categoryId = catKey,
-                    categoryName = firstCat?.label ?: catKey,
-                    categoryIcon = firstCat?.iconName ?: "",
+                    categoryKey = catKey,
+                    categoryLabel = firstCat?.label ?: catKey,
                     total = total,
-                    percentage = if (totalIncome > 0) total.toFloat() / totalIncome else 0f,
-                    transactionCount = txns.size,
-                )
-            }
-            .sortedByDescending { it.total }
-
-        val expenseByCategory = transactions
-            .filter { it.type == TransactionType.EXPENSE }
-            .groupBy { it.category?.key ?: "unknown" }
-            .map { (catKey, txns) ->
-                val total = txns.sumOf { it.amount }
-                val firstCat = txns.first().category
-                CategorySummary(
-                    categoryId = catKey,
-                    categoryName = firstCat?.label ?: catKey,
-                    categoryIcon = firstCat?.iconName ?: "",
-                    total = total,
-                    percentage = if (totalExpense > 0) total.toFloat() / totalExpense else 0f,
-                    transactionCount = txns.size,
+                    count = txns.size,
+                    percentage = if (totalAll > 0) total.toFloat() / totalAll else 0f,
                 )
             }
             .sortedByDescending { it.total }
 
         return MonthlyReport(
-            year = year,
-            month = month,
+            month = yearMonth.toString(),
             totalIncome = totalIncome,
             totalExpense = totalExpense,
-            incomeByCategory = incomeByCategory,
-            expenseByCategory = expenseByCategory,
+            categoryBreakdown = categoryBreakdown,
         )
     }
 }

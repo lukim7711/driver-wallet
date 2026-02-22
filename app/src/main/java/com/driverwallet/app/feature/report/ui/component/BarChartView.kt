@@ -16,6 +16,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.feature.report.domain.model.DailySummary
+import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -26,15 +27,17 @@ fun BarChartView(
     incomeColor: Color = MaterialTheme.colorScheme.primary,
     expenseColor: Color = MaterialTheme.colorScheme.error,
 ) {
-    val maxValue = dailySummaries.maxOf { maxOf(it.income, it.expense) }.coerceAtLeast(1)
-    val dayLabels = dailySummaries.map {
-        it.date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale("id", "ID"))
+    val maxValue = dailySummaries.maxOfOrNull { maxOf(it.income, it.expense) }?.coerceAtLeast(1) ?: 1
+    val dayLabels = dailySummaries.map { summary ->
+        LocalDate.parse(summary.date).dayOfWeek
+            .getDisplayName(TextStyle.SHORT, Locale("id", "ID"))
     }
 
     val accessibilityDesc = buildString {
-        append("Grafik batang mingguan. ")
+        append("Grafik batang. ")
         dailySummaries.forEach { day ->
-            val name = day.date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("id", "ID"))
+            val parsed = LocalDate.parse(day.date)
+            val name = parsed.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("id", "ID"))
             append("$name: masuk ${day.income}, keluar ${day.expense}. ")
         }
     }
@@ -49,12 +52,11 @@ fun BarChartView(
         val barGroupWidth = size.width / dailySummaries.size
         val barWidth = barGroupWidth * 0.3f
         val gap = barGroupWidth * 0.05f
-        val chartHeight = size.height - 40f // reserve for labels
+        val chartHeight = size.height - 40f
 
         dailySummaries.forEachIndexed { index, summary ->
             val groupX = index * barGroupWidth + barGroupWidth * 0.15f
 
-            // Income bar
             val incomeHeight = (summary.income.toFloat() / maxValue) * chartHeight
             drawRoundRect(
                 color = incomeColor,
@@ -63,7 +65,6 @@ fun BarChartView(
                 cornerRadius = CornerRadius(4.dp.toPx()),
             )
 
-            // Expense bar
             val expenseHeight = (summary.expense.toFloat() / maxValue) * chartHeight
             drawRoundRect(
                 color = expenseColor,
@@ -72,7 +73,6 @@ fun BarChartView(
                 cornerRadius = CornerRadius(4.dp.toPx()),
             )
 
-            // Day label
             drawContext.canvas.nativeCanvas.drawText(
                 dayLabels[index],
                 groupX + barWidth,

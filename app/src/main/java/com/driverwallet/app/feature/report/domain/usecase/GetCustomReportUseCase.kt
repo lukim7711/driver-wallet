@@ -18,15 +18,16 @@ class GetCustomReportUseCase @Inject constructor(
         val transactions = transactionRepository.getByDateRange(startStr, endStr)
 
         val grouped = transactions.groupBy {
-            LocalDate.parse(it.createdAt.substring(0, 10))
+            it.createdAt.substring(0, 10)
         }
 
         val dayCount = ChronoUnit.DAYS.between(startDate, endDate) + 1
         val dailySummaries = (0 until dayCount).map { offset ->
             val date = startDate.plusDays(offset)
-            val dayTxns = grouped[date].orEmpty()
+            val dateStr = date.toString()
+            val dayTxns = grouped[dateStr].orEmpty()
             DailySummary(
-                date = date,
+                date = dateStr,
                 income = dayTxns
                     .filter { it.type == TransactionType.INCOME }
                     .sumOf { it.amount },
@@ -38,8 +39,8 @@ class GetCustomReportUseCase @Inject constructor(
         }
 
         return CustomReport(
-            startDate = startDate,
-            endDate = endDate,
+            startDate = startDate.toString(),
+            endDate = endDate.toString(),
             totalIncome = dailySummaries.sumOf { it.income },
             totalExpense = dailySummaries.sumOf { it.expense },
             dailySummaries = dailySummaries,

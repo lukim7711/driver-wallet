@@ -46,7 +46,6 @@ import com.driverwallet.app.feature.report.ui.component.ReportTabRow
 import com.driverwallet.app.feature.report.ui.component.SummaryCards
 import com.driverwallet.app.feature.report.ui.component.WeekNavigator
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,7 +117,6 @@ fun ReportScreen(
         }
     }
 
-    // Date Range Picker Dialog
     if (showDatePicker) {
         val datePickerState = rememberDateRangePickerState()
         DatePickerDialog(
@@ -216,14 +214,8 @@ private fun MonthlyContent(state: MonthlyState) {
                 }
                 item {
                     CategoryBreakdownList(
-                        title = "Pemasukan per Kategori",
-                        categories = report.incomeByCategory,
-                    )
-                }
-                item {
-                    CategoryBreakdownList(
-                        title = "Pengeluaran per Kategori",
-                        categories = report.expenseByCategory,
+                        title = "Rincian per Kategori",
+                        categories = report.categoryBreakdown,
                     )
                 }
             }

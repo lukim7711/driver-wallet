@@ -22,14 +22,15 @@ class GetWeeklyReportUseCase @Inject constructor(
         val transactions = transactionRepository.getByDateRange(startStr, endStr)
 
         val grouped = transactions.groupBy {
-            LocalDate.parse(it.createdAt.substring(0, 10))
+            it.createdAt.substring(0, 10)
         }
 
         val dailySummaries = (0L..6L).map { dayOffset ->
             val date = monday.plusDays(dayOffset)
-            val dayTransactions = grouped[date].orEmpty()
+            val dateStr = date.toString()
+            val dayTransactions = grouped[dateStr].orEmpty()
             DailySummary(
-                date = date,
+                date = dateStr,
                 income = dayTransactions
                     .filter { it.type == TransactionType.INCOME }
                     .sumOf { it.amount },
@@ -41,8 +42,8 @@ class GetWeeklyReportUseCase @Inject constructor(
         }
 
         return WeeklyReport(
-            startDate = monday,
-            endDate = sunday,
+            startDate = monday.toString(),
+            endDate = sunday.toString(),
             dailySummaries = dailySummaries,
             totalIncome = dailySummaries.sumOf { it.income },
             totalExpense = dailySummaries.sumOf { it.expense },

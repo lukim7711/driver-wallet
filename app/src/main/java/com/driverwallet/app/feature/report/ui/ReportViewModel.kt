@@ -45,6 +45,9 @@ class ReportViewModel @Inject constructor(
     private var currentMonth: Int = todayJakarta().monthValue
     private var currentYear: Int = todayJakarta().year
 
+    private var customStartDate: LocalDate? = null
+    private var customEndDate: LocalDate? = null
+
     init {
         loadWeeklyReport()
         loadMonthlyReport()
@@ -64,6 +67,8 @@ class ReportViewModel @Inject constructor(
                 loadWeeklyReport()
             }
             is ReportUiAction.SelectCustomRange -> {
+                customStartDate = action.start
+                customEndDate = action.end
                 loadCustomReport(action.start, action.end)
             }
             is ReportUiAction.Export -> exportReport()
@@ -120,18 +125,14 @@ class ReportViewModel @Inject constructor(
             _uiState.update { it.copy(isExporting = true) }
             val (start, end) = when (_uiState.value.selectedTab) {
                 ReportTab.WEEKLY -> {
-                    val ws = (_uiState.value.weeklyState as? WeeklyState.Success)
-                    (ws?.report?.startDate ?: currentWeekStart) to
-                        (ws?.report?.endDate ?: currentWeekStart.plusDays(6))
+                    currentWeekStart to currentWeekStart.plusDays(6)
                 }
                 ReportTab.MONTHLY -> {
                     val first = LocalDate.of(currentYear, currentMonth, 1)
                     first to first.plusMonths(1).minusDays(1)
                 }
                 ReportTab.CUSTOM -> {
-                    val cs = (_uiState.value.customState as? CustomState.Success)
-                    (cs?.report?.startDate ?: todayJakarta()) to
-                        (cs?.report?.endDate ?: todayJakarta())
+                    (customStartDate ?: todayJakarta()) to (customEndDate ?: todayJakarta())
                 }
             }
             exportCsv(start, end)

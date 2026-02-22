@@ -23,8 +23,10 @@ import com.driverwallet.app.core.ui.theme.ExpenseRed
 import com.driverwallet.app.core.ui.theme.IncomeGreen
 import com.driverwallet.app.core.util.CurrencyFormatter
 import com.driverwallet.app.feature.report.domain.model.DailySummary
+import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
+import kotlin.math.abs
 
 @Composable
 fun DailyDetailList(
@@ -46,6 +48,7 @@ private fun DailyDetailItem(
     day: DailySummary,
     modifier: Modifier = Modifier,
 ) {
+    val parsedDate = LocalDate.parse(day.date)
     val profit = day.profit
     val profitPrefix = if (profit >= 0) "+Rp " else "-Rp "
     val profitColor = if (profit >= 0) IncomeGreen else ExpenseRed
@@ -69,7 +72,7 @@ private fun DailyDetailItem(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = day.date.dayOfMonth.toString(),
+                    text = parsedDate.dayOfMonth.toString(),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -80,7 +83,7 @@ private fun DailyDetailItem(
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = day.date.dayOfWeek.getDisplayName(
+                        text = parsedDate.dayOfWeek.getDisplayName(
                             TextStyle.FULL, Locale("id", "ID"),
                         ),
                         style = MaterialTheme.typography.titleSmall,
@@ -109,7 +112,7 @@ private fun DailyDetailItem(
             }
 
             Text(
-                text = "${profitPrefix}${CurrencyFormatter.format(kotlin.math.abs(profit))}",
+                text = "${profitPrefix}${CurrencyFormatter.format(abs(profit))}",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = profitColor,

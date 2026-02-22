@@ -65,7 +65,7 @@ private fun CategoryItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = category.categoryName,
+                    text = category.categoryLabel,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Medium,
                 )
@@ -87,7 +87,7 @@ private fun CategoryItem(
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Text(
-                    text = "${category.transactionCount} transaksi",
+                    text = "${category.count} transaksi",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

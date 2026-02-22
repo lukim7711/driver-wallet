@@ -18,26 +18,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.model.todayJakarta
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
-import java.time.DayOfWeek
 import java.util.Locale
 
 @Composable
 fun WeekNavigator(
-    startDate: LocalDate,
-    endDate: LocalDate,
+    startDate: String,
+    endDate: String,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val parsedStart = LocalDate.parse(startDate)
+    val parsedEnd = LocalDate.parse(endDate)
     val today = todayJakarta()
     val thisMonday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-    val isCurrentWeek = startDate == thisMonday
+    val isCurrentWeek = parsedStart == thisMonday
 
     val formatter = DateTimeFormatter.ofPattern("d MMM", Locale("id", "ID"))
-    val label = if (isCurrentWeek) "Minggu Ini" else "${startDate.format(formatter)} - ${endDate.format(formatter)}"
+    val label = if (isCurrentWeek) {
+        "Minggu Ini"
+    } else {
+        "${parsedStart.format(formatter)} - ${parsedEnd.format(formatter)}"
+    }
 
     Row(
         modifier = modifier
@@ -60,7 +66,7 @@ fun WeekNavigator(
             )
             if (!isCurrentWeek) {
                 Text(
-                    text = "${startDate.year}",
+                    text = "${parsedStart.year}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
