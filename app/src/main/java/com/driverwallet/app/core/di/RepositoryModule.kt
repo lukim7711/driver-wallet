@@ -5,7 +5,7 @@ import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.settings.data.SettingsRepositoryImpl
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
 import com.driverwallet.app.shared.data.TransactionRepositoryImpl
-import com.driverwallet.app.shared.data.repository.TransactionRepository
+import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

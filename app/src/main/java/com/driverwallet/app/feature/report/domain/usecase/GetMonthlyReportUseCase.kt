@@ -3,7 +3,7 @@ package com.driverwallet.app.feature.report.domain.usecase
 import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.feature.report.domain.model.CategorySummary
 import com.driverwallet.app.feature.report.domain.model.MonthlyReport
-import com.driverwallet.app.shared.data.repository.TransactionRepository
+import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import java.time.YearMonth
 import javax.inject.Inject
 

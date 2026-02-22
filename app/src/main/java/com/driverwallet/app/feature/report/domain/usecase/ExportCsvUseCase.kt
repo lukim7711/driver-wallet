@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.driverwallet.app.core.model.TransactionType
-import com.driverwallet.app.shared.data.repository.TransactionRepository
+import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.time.LocalDate
