@@ -18,6 +18,7 @@ import com.driverwallet.app.feature.dashboard.ui.DashboardScreen
 import com.driverwallet.app.feature.debt.ui.form.DebtFormScreen
 import com.driverwallet.app.feature.debt.ui.list.DebtListScreen
 import com.driverwallet.app.feature.input.ui.QuickInputScreen
+import com.driverwallet.app.feature.report.ui.ReportScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
@@ -47,7 +48,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                 0 -> DashboardScreen()
                 1 -> QuickInputScreen()
                 2 -> DebtListScreen(onAddDebt = { showDebtForm = true })
-                3 -> PlaceholderScreen("Laporan")
+                3 -> ReportScreen()
                 4 -> PlaceholderScreen("Setelan")
             }
         }
