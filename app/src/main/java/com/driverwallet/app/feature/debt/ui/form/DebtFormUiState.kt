@@ -1,5 +1,7 @@
 package com.driverwallet.app.feature.debt.ui.form
 
+import com.driverwallet.app.feature.debt.domain.model.PenaltyType
+
 sealed interface DebtFormUiState {
     data object Loading : DebtFormUiState
 
@@ -11,7 +13,7 @@ sealed interface DebtFormUiState {
         val installmentCount: String = "",
         val dueDay: String = "",
         val interestRate: String = "0",
-        val penaltyType: String = "none",
+        val penaltyType: PenaltyType = PenaltyType.NONE,
         val penaltyRate: String = "0",
         val note: String = "",
         val isSaving: Boolean = false,
@@ -35,7 +37,7 @@ sealed interface DebtFormUiAction {
     data class UpdateInstallmentCount(val value: String) : DebtFormUiAction
     data class UpdateDueDay(val value: String) : DebtFormUiAction
     data class UpdateInterestRate(val value: String) : DebtFormUiAction
-    data class UpdatePenaltyType(val value: String) : DebtFormUiAction
+    data class UpdatePenaltyType(val value: PenaltyType) : DebtFormUiAction
     data class UpdatePenaltyRate(val value: String) : DebtFormUiAction
     data class UpdateNote(val value: String) : DebtFormUiAction
     data object Save : DebtFormUiAction

@@ -1,6 +1,7 @@
 package com.driverwallet.app.shared.data.mapper
 
 import com.driverwallet.app.core.model.Categories
+import com.driverwallet.app.core.model.TransactionSource
 import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.core.model.nowJakarta
 import com.driverwallet.app.core.util.UuidGenerator
@@ -14,6 +15,7 @@ fun TransactionEntity.toDomain(): Transaction = Transaction(
     category = Categories.fromKey(category),
     amount = amount,
     note = note,
+    source = TransactionSource.fromValue(source),
     debtId = debtId,
     createdAt = createdAt,
 )
@@ -26,6 +28,7 @@ fun Transaction.toEntity(): TransactionEntity {
         category = category?.key.orEmpty(),
         amount = amount,
         note = note,
+        source = source.value,
         debtId = debtId,
         createdAt = createdAt.ifEmpty { now },
         updatedAt = now,

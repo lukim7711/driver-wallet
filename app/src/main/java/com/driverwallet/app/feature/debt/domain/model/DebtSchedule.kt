@@ -11,8 +11,11 @@ data class DebtSchedule(
     val dueDate: String,
     val expectedAmount: Long,
     val actualAmount: Long? = null,
-    val status: String = "unpaid",
+    val status: ScheduleStatus = ScheduleStatus.UNPAID,
     val paidAt: String? = null,
     val createdAt: String,
     val updatedAt: String,
-)
+) {
+    val isPaid: Boolean get() = status == ScheduleStatus.PAID
+    val isOverdue: Boolean get() = status == ScheduleStatus.OVERDUE
+}

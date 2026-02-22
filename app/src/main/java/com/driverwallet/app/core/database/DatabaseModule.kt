@@ -27,6 +27,19 @@ private val MIGRATION_1_2 = object : Migration(1, 2) {
     }
 }
 
+private val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Fase 1: Add source column to track transaction origin (manual vs debt_payment)
+        db.execSQL(
+            "ALTER TABLE transactions ADD COLUMN source TEXT NOT NULL DEFAULT 'manual'"
+        )
+        // Backfill: existing transactions with debt_id are debt payments
+        db.execSQL(
+            "UPDATE transactions SET source = 'debt_payment' WHERE debt_id IS NOT NULL"
+        )
+    }
+}
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -39,7 +52,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "driver_wallet.db",
         )
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .addCallback(DatabaseCallback())
             .build()
 

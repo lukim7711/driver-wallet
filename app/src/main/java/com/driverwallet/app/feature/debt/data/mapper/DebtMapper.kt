@@ -5,6 +5,10 @@ import com.driverwallet.app.feature.debt.data.entity.DebtEntity
 import com.driverwallet.app.feature.debt.data.entity.DebtScheduleEntity
 import com.driverwallet.app.feature.debt.domain.model.Debt
 import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
+import com.driverwallet.app.feature.debt.domain.model.DebtStatus
+import com.driverwallet.app.feature.debt.domain.model.DebtType
+import com.driverwallet.app.feature.debt.domain.model.PenaltyType
+import com.driverwallet.app.feature.debt.domain.model.ScheduleStatus
 import com.driverwallet.app.feature.debt.domain.model.UpcomingDue
 
 // Entity → Domain
@@ -18,11 +22,11 @@ fun DebtEntity.toDomain() = Debt(
     installmentCount = installmentCount,
     dueDay = dueDay,
     interestRate = interestRate,
-    penaltyType = penaltyType,
+    penaltyType = PenaltyType.fromValue(penaltyType),
     penaltyRate = penaltyRate,
-    debtType = debtType,
+    debtType = DebtType.fromValue(debtType),
     note = note,
-    status = status,
+    status = DebtStatus.fromValue(status),
     startDate = startDate,
     createdAt = createdAt,
     updatedAt = updatedAt,
@@ -35,7 +39,7 @@ fun DebtScheduleEntity.toDomain() = DebtSchedule(
     dueDate = dueDate,
     expectedAmount = expectedAmount,
     actualAmount = actualAmount,
-    status = status,
+    status = ScheduleStatus.fromValue(status),
     paidAt = paidAt,
     createdAt = createdAt,
     updatedAt = updatedAt,
@@ -61,11 +65,11 @@ fun Debt.toEntity() = DebtEntity(
     installmentCount = installmentCount,
     dueDay = dueDay,
     interestRate = interestRate,
-    penaltyType = penaltyType,
+    penaltyType = penaltyType.value,
     penaltyRate = penaltyRate,
-    debtType = debtType,
+    debtType = debtType.value,
     note = note,
-    status = status,
+    status = status.value,
     startDate = startDate,
     createdAt = createdAt,
     updatedAt = updatedAt,
@@ -78,7 +82,7 @@ fun DebtSchedule.toEntity() = DebtScheduleEntity(
     dueDate = dueDate,
     expectedAmount = expectedAmount,
     actualAmount = actualAmount,
-    status = status,
+    status = status.value,
     paidAt = paidAt,
     createdAt = createdAt,
     updatedAt = updatedAt,

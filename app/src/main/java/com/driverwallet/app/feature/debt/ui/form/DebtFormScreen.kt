@@ -43,9 +43,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.driverwallet.app.core.ui.component.LoadingIndicator
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
+import com.driverwallet.app.feature.debt.domain.model.PenaltyType
 
 private val platforms = listOf("Shopee", "GoPay", "Kredivo", "SeaBank", "Akulaku", "Lainnya")
-private val penaltyTypes = listOf("none" to "Tidak Ada", "fixed" to "Nominal Tetap", "percentage" to "Persentase")
+private val penaltyTypeOptions = listOf(
+    PenaltyType.NONE to "Tidak Ada",
+    PenaltyType.FIXED to "Nominal Tetap",
+    PenaltyType.PERCENTAGE to "Persentase",
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -206,7 +211,8 @@ private fun DebtFormContent(
 
         // Penalty type dropdown
         var penaltyExpanded by remember { mutableStateOf(false) }
-        val selectedPenaltyLabel = penaltyTypes.firstOrNull { it.first == state.penaltyType }?.second ?: "Tidak Ada"
+        val selectedPenaltyLabel = penaltyTypeOptions
+            .firstOrNull { it.first == state.penaltyType }?.second ?: "Tidak Ada"
         ExposedDropdownMenuBox(
             expanded = penaltyExpanded,
             onExpandedChange = { penaltyExpanded = it },
@@ -223,11 +229,11 @@ private fun DebtFormContent(
                 expanded = penaltyExpanded,
                 onDismissRequest = { penaltyExpanded = false },
             ) {
-                penaltyTypes.forEach { (key, label) ->
+                penaltyTypeOptions.forEach { (penaltyType, label) ->
                     DropdownMenuItem(
                         text = { Text(label) },
                         onClick = {
-                            onAction(DebtFormUiAction.UpdatePenaltyType(key))
+                            onAction(DebtFormUiAction.UpdatePenaltyType(penaltyType))
                             penaltyExpanded = false
                         },
                     )

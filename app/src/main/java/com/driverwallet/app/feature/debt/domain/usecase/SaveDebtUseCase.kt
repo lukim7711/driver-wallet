@@ -5,6 +5,9 @@ import com.driverwallet.app.core.util.UuidGenerator
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.debt.domain.model.Debt
 import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
+import com.driverwallet.app.feature.debt.domain.model.DebtStatus
+import com.driverwallet.app.feature.debt.domain.model.PenaltyType
+import com.driverwallet.app.feature.debt.domain.model.ScheduleStatus
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -46,7 +49,7 @@ class SaveDebtUseCase @Inject constructor(
             penaltyRate = params.penaltyRate,
             dueDay = params.dueDay,
             note = params.note,
-            status = "active",
+            status = DebtStatus.ACTIVE,
             startDate = params.startDate.toString(),
             createdAt = now,
             updatedAt = now,
@@ -84,7 +87,7 @@ class SaveDebtUseCase @Inject constructor(
                 dueDate = dueDate.toString(),
                 expectedAmount = installmentPerMonth,
                 actualAmount = null,
-                status = "upcoming",
+                status = ScheduleStatus.UNPAID,
                 paidAt = null,
                 createdAt = now,
                 updatedAt = now,
@@ -101,7 +104,7 @@ data class DebtFormParams(
     val installmentCount: Int,
     val dueDay: Int,
     val interestRate: Double = 0.0,
-    val penaltyType: String = "none",
+    val penaltyType: PenaltyType = PenaltyType.NONE,
     val penaltyRate: Double = 0.0,
     val note: String = "",
     val startDate: LocalDate = LocalDate.now(),

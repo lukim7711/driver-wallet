@@ -32,4 +32,9 @@ object Categories {
     private val categoryMap: Map<String, Category> = allCategories.associateBy { it.key }
 
     fun fromKey(key: String): Category? = categoryMap[key]
+
+    fun getByType(type: TransactionType): List<Category> = when (type) {
+        TransactionType.INCOME -> incomeCategories
+        TransactionType.EXPENSE -> expenseCategories
+    }
 }
