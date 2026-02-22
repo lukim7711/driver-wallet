@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.component.AmountText
 import com.driverwallet.app.core.ui.component.AppProgressBar
-import com.driverwallet.app.feature.report.domain.model.CategorySummary
+import com.driverwallet.app.shared.domain.model.CategorySummary
 
 @Composable
 fun CategoryBreakdownList(

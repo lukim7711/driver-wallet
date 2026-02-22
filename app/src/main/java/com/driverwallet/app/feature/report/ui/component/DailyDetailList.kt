@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.theme.ExpenseRed
 import com.driverwallet.app.core.ui.theme.IncomeGreen
 import com.driverwallet.app.core.util.CurrencyFormatter
-import com.driverwallet.app.feature.report.domain.model.DailySummary
+import com.driverwallet.app.shared.domain.model.DailySummary
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
