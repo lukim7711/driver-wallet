@@ -39,19 +39,19 @@ class GetDashboardSummaryUseCase @Inject constructor(
         val spentToday = transactionRepository.getBudgetSpentToday(todayPrefix, budgetCategories)
         val budgetInfo = BudgetInfo(totalBudget = totalBudget, spentToday = spentToday)
 
-        // 5. Due alerts (next 7 days)
+        // 5. Due alerts (next 7 days) — uses domain UpcomingDue
         val maxDate = today.plusDays(7).toString()
         val upcomingDue = debtRepository.getUpcomingDue(maxDate)
-        val dueAlerts = upcomingDue.map { tuple ->
-            val dueDate = LocalDate.parse(tuple.dueDate)
+        val dueAlerts = upcomingDue.map { due ->
+            val dueDate = LocalDate.parse(due.dueDate)
             val daysUntil = ChronoUnit.DAYS.between(today, dueDate)
             DueAlert(
-                debtId = tuple.debtId,
-                debtName = tuple.debtName,
-                platform = tuple.platform,
-                dueDate = tuple.dueDate,
-                amount = tuple.expectedAmount,
-                installmentNumber = tuple.installmentNumber,
+                debtId = due.debtId,
+                debtName = due.debtName,
+                platform = due.platform,
+                dueDate = due.dueDate,
+                amount = due.expectedAmount,
+                installmentNumber = due.installmentNumber,
                 urgency = UrgencyLevel.fromDaysUntilDue(daysUntil),
             )
         }

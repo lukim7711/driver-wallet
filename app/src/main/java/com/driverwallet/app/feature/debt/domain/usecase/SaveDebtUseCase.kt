@@ -2,9 +2,9 @@ package com.driverwallet.app.feature.debt.domain.usecase
 
 import com.driverwallet.app.core.model.nowJakarta
 import com.driverwallet.app.core.util.UuidGenerator
-import com.driverwallet.app.feature.debt.data.entity.DebtEntity
-import com.driverwallet.app.feature.debt.data.entity.DebtScheduleEntity
 import com.driverwallet.app.feature.debt.domain.DebtRepository
+import com.driverwallet.app.feature.debt.domain.model.Debt
+import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class SaveDebtUseCase @Inject constructor(
         val now = nowJakarta().format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
         val debtId = UuidGenerator.generate()
 
-        val debt = DebtEntity(
+        val debt = Debt(
             id = debtId,
             name = params.name,
             platform = params.platform,
@@ -71,13 +71,13 @@ class SaveDebtUseCase @Inject constructor(
         dueDay: Int,
         startDate: LocalDate,
         now: String,
-    ): List<DebtScheduleEntity> {
+    ): List<DebtSchedule> {
         return (1..installmentCount).map { index ->
             val scheduleMonth = startDate.plusMonths(index.toLong() - 1)
             val safeDueDay = minOf(dueDay, scheduleMonth.lengthOfMonth())
             val dueDate = scheduleMonth.withDayOfMonth(safeDueDay)
 
-            DebtScheduleEntity(
+            DebtSchedule(
                 id = UuidGenerator.generate(),
                 debtId = debtId,
                 installmentNumber = index,

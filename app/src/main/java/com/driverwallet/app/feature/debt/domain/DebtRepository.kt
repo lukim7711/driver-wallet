@@ -1,16 +1,17 @@
 package com.driverwallet.app.feature.debt.domain
 
-import com.driverwallet.app.feature.debt.data.dao.UpcomingDueTuple
-import com.driverwallet.app.feature.debt.data.entity.DebtEntity
-import com.driverwallet.app.feature.debt.data.entity.DebtScheduleEntity
+import com.driverwallet.app.feature.debt.domain.model.Debt
+import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
+import com.driverwallet.app.feature.debt.domain.model.UpcomingDue
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Aggregated debt info combining debt with its schedule progress.
+ * Now uses domain models instead of Room entities.
  */
 data class DebtWithScheduleInfo(
-    val debt: DebtEntity,
-    val nextSchedule: DebtScheduleEntity?,
+    val debt: Debt,
+    val nextSchedule: DebtSchedule?,
     val paidCount: Int,
     val totalCount: Int,
 ) {
@@ -21,10 +22,10 @@ data class DebtWithScheduleInfo(
 interface DebtRepository {
     fun observeActiveDebtsWithSchedule(): Flow<List<DebtWithScheduleInfo>>
     fun observeTotalRemaining(): Flow<Long>
-    suspend fun getById(id: String): DebtEntity?
-    suspend fun saveDebt(debt: DebtEntity, schedules: List<DebtScheduleEntity>)
+    suspend fun getById(id: String): Debt?
+    suspend fun saveDebt(debt: Debt, schedules: List<DebtSchedule>)
     suspend fun payInstallment(debtId: String, scheduleId: String, amount: Long)
     suspend fun softDelete(debtId: String)
-    suspend fun getUpcomingDue(maxDate: String): List<UpcomingDueTuple>
+    suspend fun getUpcomingDue(maxDate: String): List<UpcomingDue>
     suspend fun markOverdueSchedules(today: String)
 }
