@@ -6,9 +6,6 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.driverwallet.app.feature.debt.data.dao.DebtDao
 import com.driverwallet.app.feature.debt.data.dao.DebtScheduleDao
-import com.driverwallet.app.feature.settings.data.dao.DailyBudgetDao
-import com.driverwallet.app.feature.settings.data.dao.DailyExpenseDao
-import com.driverwallet.app.feature.settings.data.dao.MonthlyExpenseDao
 import com.driverwallet.app.feature.settings.data.dao.RecurringExpenseDao
 import com.driverwallet.app.feature.settings.data.dao.SettingsDao
 import com.driverwallet.app.shared.data.dao.TransactionDao
@@ -73,8 +70,15 @@ private val MIGRATION_3_4 = object : Migration(3, 4) {
             SELECT `name`, `icon`, `amount`, 'monthly', `is_deleted`
             FROM `monthly_expenses`""".trimIndent()
         )
+    }
+}
 
-        // Old tables kept temporarily — will be dropped in cleanup commit
+private val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Drop legacy tables — data already migrated to recurring_expenses in v3→v4
+        db.execSQL("DROP TABLE IF EXISTS `daily_budgets`")
+        db.execSQL("DROP TABLE IF EXISTS `daily_expenses`")
+        db.execSQL("DROP TABLE IF EXISTS `monthly_expenses`")
     }
 }
 
@@ -90,7 +94,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "driver_wallet.db",
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
             .addCallback(DatabaseCallback())
             .build()
 
@@ -104,12 +108,4 @@ object DatabaseModule {
     @Provides fun provideDebtScheduleDao(db: AppDatabase): DebtScheduleDao = db.debtScheduleDao()
     @Provides fun provideRecurringExpenseDao(db: AppDatabase): RecurringExpenseDao = db.recurringExpenseDao()
     @Provides fun provideSettingsDao(db: AppDatabase): SettingsDao = db.settingsDao()
-
-    // Legacy providers — kept temporarily for backward compat
-    @Suppress("DEPRECATION")
-    @Provides fun provideDailyBudgetDao(db: AppDatabase): DailyBudgetDao = db.dailyBudgetDao()
-    @Suppress("DEPRECATION")
-    @Provides fun provideMonthlyExpenseDao(db: AppDatabase): MonthlyExpenseDao = db.monthlyExpenseDao()
-    @Suppress("DEPRECATION")
-    @Provides fun provideDailyExpenseDao(db: AppDatabase): DailyExpenseDao = db.dailyExpenseDao()
 }
