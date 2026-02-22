@@ -1,8 +1,7 @@
 package com.driverwallet.app.feature.report.domain.usecase
 
-import com.driverwallet.app.core.model.TransactionType
-import com.driverwallet.app.feature.report.domain.model.DailySummary
 import com.driverwallet.app.feature.report.domain.model.WeeklyReport
+import com.driverwallet.app.shared.domain.model.DailySummary
 import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -19,34 +18,22 @@ class GetWeeklyReportUseCase @Inject constructor(
         val startStr = "${monday}T00:00:00"
         val endStr = "${sunday}T23:59:59"
 
-        val transactions = transactionRepository.getByDateRange(startStr, endStr)
+        // SQL aggregation — returns ~14 rows max (7 days × 2 types)
+        val dailySummaries = transactionRepository.getDailySummary(startStr, endStr)
 
-        val grouped = transactions.groupBy {
-            it.createdAt.substring(0, 10)
-        }
-
-        val dailySummaries = (0L..6L).map { dayOffset ->
-            val date = monday.plusDays(dayOffset)
-            val dateStr = date.toString()
-            val dayTransactions = grouped[dateStr].orEmpty()
-            DailySummary(
-                date = dateStr,
-                income = dayTransactions
-                    .filter { it.type == TransactionType.INCOME }
-                    .sumOf { it.amount },
-                expense = dayTransactions
-                    .filter { it.type == TransactionType.EXPENSE }
-                    .sumOf { it.amount },
-                transactionCount = dayTransactions.size,
-            )
+        // Fill gaps for days with no transactions
+        val summaryMap = dailySummaries.associateBy { it.date }
+        val allDays = (0L..6L).map { dayOffset ->
+            val dateStr = monday.plusDays(dayOffset).toString()
+            summaryMap[dateStr] ?: DailySummary(date = dateStr)
         }
 
         return WeeklyReport(
             startDate = monday.toString(),
             endDate = sunday.toString(),
-            dailySummaries = dailySummaries,
-            totalIncome = dailySummaries.sumOf { it.income },
-            totalExpense = dailySummaries.sumOf { it.expense },
+            dailySummaries = allDays,
+            totalIncome = allDays.sumOf { it.income },
+            totalExpense = allDays.sumOf { it.expense },
         )
     }
 }
