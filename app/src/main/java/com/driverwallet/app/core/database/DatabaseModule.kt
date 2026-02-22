@@ -2,6 +2,8 @@ package com.driverwallet.app.core.database
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.driverwallet.app.feature.debt.data.dao.DebtDao
 import com.driverwallet.app.feature.debt.data.dao.DebtScheduleDao
 import com.driverwallet.app.feature.settings.data.dao.DailyBudgetDao
@@ -16,6 +18,15 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+private val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Bug #11: Add composite index for debt list queries
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_debts_status_is_deleted` ON `debts` (`status`, `is_deleted`)"
+        )
+    }
+}
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -28,6 +39,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "driver_wallet.db",
         )
+            .addMigrations(MIGRATION_1_2)
             .addCallback(DatabaseCallback())
             .build()
 

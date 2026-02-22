@@ -2,9 +2,15 @@ package com.driverwallet.app.feature.debt.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "debts")
+@Entity(
+    tableName = "debts",
+    indices = [
+        Index(value = ["status", "is_deleted"]),
+    ],
+)
 data class DebtEntity(
     @PrimaryKey val id: String,
     val platform: String,
