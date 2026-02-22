@@ -1,19 +1,16 @@
 package com.driverwallet.app.feature.report.domain.usecase
 
-import android.content.Context
 import android.net.Uri
-import androidx.core.content.FileProvider
 import com.driverwallet.app.core.model.TransactionType
+import com.driverwallet.app.feature.report.domain.CsvFileExporter
 import com.driverwallet.app.shared.data.repository.TransactionRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class ExportCsvUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository,
-    @ApplicationContext private val context: Context,
+    private val csvFileExporter: CsvFileExporter,
 ) {
     suspend operator fun invoke(startDate: LocalDate, endDate: LocalDate): Result<Uri> {
         return runCatching {
@@ -37,16 +34,7 @@ class ExportCsvUseCase @Inject constructor(
                 }
             }
 
-            val cacheDir = File(context.cacheDir, "exports")
-            cacheDir.mkdirs()
-            val file = File(cacheDir, fileName)
-            file.writeText(csvContent)
-
-            FileProvider.getUriForFile(
-                context,
-                "${context.packageName}.fileprovider",
-                file,
-            )
+            csvFileExporter.writeCsv(fileName, csvContent)
         }
     }
 
