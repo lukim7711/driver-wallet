@@ -112,4 +112,10 @@ class TransactionRepositoryImpl @Inject constructor(
         val now = nowJakarta().format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
         transactionDao.softDelete(id, now)
     }
+
+    override suspend fun getRecentTransactions(limit: Int): List<Transaction> {
+        val todayPrefix = todayJakarta().toString()
+        return transactionDao.getRecentTransactions(todayPrefix, limit)
+            .map { it.toDomain() }
+    }
 }

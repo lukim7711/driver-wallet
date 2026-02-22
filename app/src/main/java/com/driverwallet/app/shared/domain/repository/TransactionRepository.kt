@@ -19,4 +19,10 @@ interface TransactionRepository {
     suspend fun getByDateRange(startDate: String, endDate: String): List<Transaction>
     suspend fun getBudgetSpentToday(todayPrefix: String, categories: List<String>): Long
     suspend fun softDelete(id: String)
+
+    /**
+     * One-shot fetch of recent transactions for today.
+     * Prefer over [observeTodayTransactions] when you only need a single snapshot.
+     */
+    suspend fun getRecentTransactions(limit: Int = 5): List<Transaction>
 }

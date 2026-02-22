@@ -31,6 +31,22 @@ interface TransactionDao {
     """)
     fun getRecentByDate(datePrefix: String, limit: Int = 5): Flow<List<TransactionEntity>>
 
+    /**
+     * One-shot version of [getRecentByDate] for use cases that need
+     * a single snapshot without subscribing to Room's InvalidationTracker.
+     *
+     * Prefer this over `getRecentByDate().first()` to avoid:
+     * - Unnecessary Flow subscription overhead
+     * - InvalidationTracker registration/unregistration
+     * - Extra coroutine machinery
+     */
+    @Query("""
+        SELECT * FROM transactions
+        WHERE created_at LIKE :datePrefix || '%' AND is_deleted = 0
+        ORDER BY created_at DESC LIMIT :limit
+    """)
+    suspend fun getRecentTransactions(datePrefix: String, limit: Int): List<TransactionEntity>
+
     @Query("""
         SELECT substr(created_at, 1, 10) AS date, type, SUM(amount) AS total, COUNT(*) AS count
         FROM transactions

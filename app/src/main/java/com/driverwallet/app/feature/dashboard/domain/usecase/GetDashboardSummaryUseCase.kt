@@ -8,7 +8,6 @@ import com.driverwallet.app.feature.dashboard.domain.model.DueAlert
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
 import com.driverwallet.app.shared.domain.repository.TransactionRepository
-import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -57,11 +56,8 @@ class GetDashboardSummaryUseCase @Inject constructor(
             )
         }
 
-        // 6. Recent transactions (today, max 5)
-        val recentTransactions = transactionRepository
-            .observeTodayTransactions()
-            .first()
-            .take(5)
+        // 6. Recent transactions (one-shot, no Flow overhead)
+        val recentTransactions = transactionRepository.getRecentTransactions(limit = 5)
 
         // 7. Daily target
         val dailyTarget = calculateDailyTarget(earnedToday = todaySummary.profit)

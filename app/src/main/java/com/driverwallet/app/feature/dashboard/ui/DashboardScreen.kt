@@ -32,19 +32,24 @@ import com.driverwallet.app.feature.dashboard.ui.component.TodayTransactionList
 @Composable
 fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (val state = uiState) {
-        is DashboardUiState.Loading -> LoadingIndicator()
+        is DashboardUiState.Loading -> LoadingIndicator(modifier = modifier)
         is DashboardUiState.Error -> {
             ErrorContent(
                 message = state.message,
                 onRetry = { viewModel.onAction(DashboardUiAction.Refresh) },
+                modifier = modifier,
             )
         }
         is DashboardUiState.Success -> {
-            DashboardContent(state = state)
+            DashboardContent(
+                state = state,
+                modifier = modifier,
+            )
         }
     }
 }
@@ -59,30 +64,30 @@ private fun DashboardContent(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        item {
+        item(key = "profit_hero") {
             ProfitHeroCard(
                 profit = state.todaySummary.profit,
                 percentChange = state.percentChange,
             )
         }
-        item {
+        item(key = "income_expense") {
             IncomeExpenseRow(
                 income = state.todaySummary.income,
                 expense = state.todaySummary.expense,
             )
         }
-        item {
+        item(key = "daily_target") {
             DailyTargetSection(dailyTarget = state.dailyTarget)
         }
-        item {
+        item(key = "budget") {
             BudgetRemainingCard(budgetInfo = state.budgetInfo)
         }
         if (state.dueAlerts.isNotEmpty()) {
-            item {
+            item(key = "due_alerts") {
                 DueAlertCard(alerts = state.dueAlerts)
             }
         }
-        item {
+        item(key = "recent_transactions") {
             TodayTransactionList(transactions = state.recentTransactions)
         }
     }
