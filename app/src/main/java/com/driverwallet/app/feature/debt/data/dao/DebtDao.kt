@@ -28,6 +28,9 @@ interface DebtDao {
     @Query("UPDATE debts SET remaining_amount = :remaining, updated_at = :updatedAt WHERE id = :id")
     suspend fun updateRemaining(id: String, remaining: Long, updatedAt: String)
 
+    @Query("UPDATE debts SET total_amount = :totalAmount, remaining_amount = :remainingAmount, updated_at = :updatedAt WHERE id = :id")
+    suspend fun updateAmounts(id: String, totalAmount: Long, remainingAmount: Long, updatedAt: String)
+
     @Query("UPDATE debts SET status = :status, updated_at = :updatedAt WHERE id = :id")
     suspend fun updateStatus(id: String, status: String, updatedAt: String)
 
