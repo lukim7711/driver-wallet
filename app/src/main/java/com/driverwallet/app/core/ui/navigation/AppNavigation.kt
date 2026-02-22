@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.driverwallet.app.feature.input.ui.QuickInputScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
@@ -31,12 +32,27 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center,
         ) {
-            Text(
-                text = bottomNavItems[selectedTab].label,
-                style = MaterialTheme.typography.headlineLarge,
-            )
+            when (selectedTab) {
+                0 -> PlaceholderScreen("Beranda")
+                1 -> QuickInputScreen()
+                2 -> PlaceholderScreen("Hutang")
+                3 -> PlaceholderScreen("Laporan")
+                4 -> PlaceholderScreen("Setelan")
+            }
         }
+    }
+}
+
+@Composable
+private fun PlaceholderScreen(title: String) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineLarge,
+        )
     }
 }
