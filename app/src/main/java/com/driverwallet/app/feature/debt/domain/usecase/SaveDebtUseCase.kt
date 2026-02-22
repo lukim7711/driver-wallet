@@ -47,6 +47,7 @@ class SaveDebtUseCase @Inject constructor(
             dueDay = params.dueDay,
             note = params.note,
             status = "active",
+            startDate = params.startDate.toString(),
             createdAt = now,
             updatedAt = now,
         )
@@ -82,10 +83,9 @@ class SaveDebtUseCase @Inject constructor(
                 installmentNumber = index,
                 dueDate = dueDate.toString(),
                 expectedAmount = installmentPerMonth,
-                isPaid = false,
-                paidAt = null,
-                paidAmount = null,
+                actualAmount = null,
                 status = "upcoming",
+                paidAt = null,
                 createdAt = now,
                 updatedAt = now,
             )
