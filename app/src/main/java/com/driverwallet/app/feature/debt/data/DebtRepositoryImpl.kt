@@ -1,7 +1,6 @@
 package com.driverwallet.app.feature.debt.data
 
-import androidx.room.withTransaction
-import com.driverwallet.app.core.database.AppDatabase
+import com.driverwallet.app.core.database.TransactionRunner
 import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.core.model.nowJakarta
 import com.driverwallet.app.core.util.UuidGenerator
@@ -22,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class DebtRepositoryImpl @Inject constructor(
-    private val database: AppDatabase,
+    private val transactionRunner: TransactionRunner,
     private val debtDao: DebtDao,
     private val debtScheduleDao: DebtScheduleDao,
     private val transactionDao: TransactionDao,
@@ -47,7 +46,7 @@ class DebtRepositoryImpl @Inject constructor(
         debtDao.getById(id)?.toDomain()
 
     override suspend fun saveDebt(debt: Debt, schedules: List<DebtSchedule>) {
-        database.withTransaction {
+        transactionRunner.withTransaction {
             debtDao.insert(debt.toEntity())
             debtScheduleDao.insertAll(schedules.map { it.toEntity() })
         }
@@ -65,7 +64,7 @@ class DebtRepositoryImpl @Inject constructor(
         scheduleId: String,
         amount: Long,
     ) {
-        database.withTransaction {
+        transactionRunner.withTransaction {
             val now = nowJakarta().format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
 
             // 1. Update remaining
