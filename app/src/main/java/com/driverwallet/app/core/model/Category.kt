@@ -29,5 +29,7 @@ object Categories {
     val expenseCategories = listOf(FUEL, FOOD, CIGARETTE, PHONE, PARKING, MAINTENANCE, TOLL, OTHER_EXPENSE)
     val allCategories = incomeCategories + expenseCategories + DEBT_PAYMENT
 
-    fun fromKey(key: String): Category? = allCategories.find { it.key == key }
+    private val categoryMap: Map<String, Category> = allCategories.associateBy { it.key }
+
+    fun fromKey(key: String): Category? = categoryMap[key]
 }
