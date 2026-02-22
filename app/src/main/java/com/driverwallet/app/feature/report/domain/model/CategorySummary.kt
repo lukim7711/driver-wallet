@@ -1,12 +1,10 @@
+@file:Suppress("unused")
+
 package com.driverwallet.app.feature.report.domain.model
 
-import androidx.compose.runtime.Immutable
-
-@Immutable
-data class CategorySummary(
-    val categoryKey: String,
-    val categoryLabel: String,
-    val total: Long,
-    val count: Int,
-    val percentage: Float = 0f,
-)
+/**
+ * Typealias for backward compatibility.
+ * TODO: Update consumers to import from shared.domain.model directly,
+ *       then delete this file.
+ */
+typealias CategorySummary = com.driverwallet.app.shared.domain.model.CategorySummary

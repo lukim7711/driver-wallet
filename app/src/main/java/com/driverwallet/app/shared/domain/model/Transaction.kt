@@ -1,10 +1,12 @@
 package com.driverwallet.app.shared.domain.model
 
-import androidx.compose.runtime.Immutable
 import com.driverwallet.app.core.model.Category
 import com.driverwallet.app.core.model.TransactionType
 
-@Immutable
+/**
+ * Core transaction domain model.
+ * No Compose dependency — data class is auto-stable by Compose compiler plugin.
+ */
 data class Transaction(
     val id: String = "",
     val type: TransactionType = TransactionType.INCOME,
