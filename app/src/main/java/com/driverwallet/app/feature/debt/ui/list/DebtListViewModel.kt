@@ -8,12 +8,12 @@ import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.debt.domain.usecase.GetActiveDebtsUseCase
 import com.driverwallet.app.feature.debt.domain.usecase.PayDebtInstallmentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +30,8 @@ class DebtListViewModel @Inject constructor(
     private val _paymentDialog = MutableStateFlow<PaymentDialogState?>(null)
     val paymentDialog: StateFlow<PaymentDialogState?> = _paymentDialog.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _uiEvent = Channel<GlobalUiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         observeDebts()
@@ -83,7 +83,7 @@ class DebtListViewModel @Inject constructor(
             payInstallment(action.debtId, action.scheduleId, action.amount)
                 .onSuccess {
                     _paymentDialog.value = null
-                    _uiEvent.emit(
+                    _uiEvent.send(
                         GlobalUiEvent.ShowSnackbar(
                             "Cicilan Rp ${CurrencyFormatter.format(action.amount)} berhasil dibayar",
                         ),
@@ -91,7 +91,7 @@ class DebtListViewModel @Inject constructor(
                 }
                 .onFailure { error ->
                     _paymentDialog.value = _paymentDialog.value?.copy(isProcessing = false)
-                    _uiEvent.emit(
+                    _uiEvent.send(
                         GlobalUiEvent.ShowSnackbar(error.message ?: "Gagal membayar cicilan"),
                     )
                 }
@@ -102,10 +102,10 @@ class DebtListViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching { debtRepository.softDelete(debtId) }
                 .onSuccess {
-                    _uiEvent.emit(GlobalUiEvent.ShowSnackbar("Hutang dihapus"))
+                    _uiEvent.send(GlobalUiEvent.ShowSnackbar("Hutang dihapus"))
                 }
                 .onFailure { error ->
-                    _uiEvent.emit(GlobalUiEvent.ShowSnackbar(error.message ?: "Gagal menghapus"))
+                    _uiEvent.send(GlobalUiEvent.ShowSnackbar(error.message ?: "Gagal menghapus"))
                 }
         }
     }

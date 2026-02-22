@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.driverwallet.app.core.ui.component.LoadingIndicator
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
+import com.driverwallet.app.core.ui.util.ObserveAsEvents
 import com.driverwallet.app.feature.input.ui.component.AmountDisplay
 import com.driverwallet.app.feature.input.ui.component.CategoryGrid
 import com.driverwallet.app.feature.input.ui.component.NoteInput
@@ -31,22 +31,22 @@ import com.driverwallet.app.feature.input.ui.component.TypeToggle
 @Composable
 fun QuickInputScreen(
     viewModel: QuickInputViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
-        viewModel.uiEvent.collect { event ->
-            when (event) {
-                is GlobalUiEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
-                }
-                else -> Unit
+    ObserveAsEvents(viewModel.uiEvent) { event ->
+        when (event) {
+            is GlobalUiEvent.ShowSnackbar -> {
+                snackbarHostState.showSnackbar(event.message)
             }
+            else -> Unit
         }
     }
 
     Scaffold(
+        modifier = modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
         when (val state = uiState) {

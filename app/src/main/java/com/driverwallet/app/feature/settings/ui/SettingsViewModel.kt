@@ -9,11 +9,11 @@ import com.driverwallet.app.feature.settings.domain.usecase.SaveDailyBudgetsUseC
 import com.driverwallet.app.feature.settings.domain.usecase.SaveDailyExpenseUseCase
 import com.driverwallet.app.feature.settings.domain.usecase.SaveMonthlyExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,8 +29,8 @@ class SettingsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _uiEvent = Channel<GlobalUiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         observeDarkMode()
@@ -50,7 +50,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun observeTargetDate() {
         viewModelScope.launch {
-            settingsRepository.observeSetting(SettingsKeys.TARGET_DATE).collect { value ->
+            settingsRepository.observeSetting(SettingsKeys.DEBT_TARGET_DATE).collect { value ->
                 _uiState.update { it.copy(targetDate = value ?: "") }
             }
         }
@@ -134,11 +134,11 @@ class SettingsViewModel @Inject constructor(
             saveDailyBudgets(budgets)
 
             if (state.targetDate.isNotBlank()) {
-                settingsRepository.saveSetting(SettingsKeys.TARGET_DATE, state.targetDate)
+                settingsRepository.saveSetting(SettingsKeys.DEBT_TARGET_DATE, state.targetDate)
             }
 
             _uiState.update { it.copy(isSaving = false) }
-            _uiEvent.emit(GlobalUiEvent.ShowSnackbar("Pengaturan berhasil disimpan"))
+            _uiEvent.send(GlobalUiEvent.ShowSnackbar("Pengaturan berhasil disimpan"))
         }
     }
 
@@ -191,7 +191,7 @@ class SettingsViewModel @Inject constructor(
             result
                 .onSuccess { dismissDialog() }
                 .onFailure { error ->
-                    _uiEvent.emit(GlobalUiEvent.ShowSnackbar(error.message ?: "Gagal menyimpan"))
+                    _uiEvent.send(GlobalUiEvent.ShowSnackbar(error.message ?: "Gagal menyimpan"))
                 }
         }
     }
@@ -202,7 +202,7 @@ class SettingsViewModel @Inject constructor(
                 if (isMonthly) settingsRepository.deleteMonthlyExpense(id)
                 else settingsRepository.deleteDailyExpense(id)
             }.onSuccess {
-                _uiEvent.emit(GlobalUiEvent.ShowSnackbar("Berhasil dihapus"))
+                _uiEvent.send(GlobalUiEvent.ShowSnackbar("Berhasil dihapus"))
             }
         }
     }
