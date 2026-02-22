@@ -4,22 +4,25 @@ import com.driverwallet.app.feature.debt.domain.DebtRepository
 import javax.inject.Inject
 
 /**
- * INSTALLMENT-specific payment: requires a scheduleId.
- * For PERSONAL/TAB debts, use [PayDebtUseCase] instead.
+ * Universal payment for PERSONAL and TAB debts.
+ * No schedule needed — just pay whatever amount, whenever.
+ *
+ * For INSTALLMENT debts, use [PayDebtInstallmentUseCase] instead
+ * (requires scheduleId).
  */
-class PayDebtInstallmentUseCase @Inject constructor(
+class PayDebtUseCase @Inject constructor(
     private val repository: DebtRepository,
 ) {
     suspend operator fun invoke(
         debtId: String,
-        scheduleId: String,
         amount: Long,
+        note: String = "",
     ): Result<Unit> {
         if (amount <= 0) {
             return Result.failure(IllegalArgumentException("Jumlah bayar harus lebih dari 0"))
         }
         return runCatching {
-            repository.payInstallment(debtId, scheduleId, amount)
+            repository.payDebt(debtId, amount, note)
         }
     }
 }

@@ -5,7 +5,9 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.driverwallet.app.feature.debt.data.dao.DebtDao
+import com.driverwallet.app.feature.debt.data.dao.DebtPaymentDao
 import com.driverwallet.app.feature.debt.data.dao.DebtScheduleDao
+import com.driverwallet.app.feature.debt.data.dao.KasbonEntryDao
 import com.driverwallet.app.feature.settings.data.dao.RecurringExpenseDao
 import com.driverwallet.app.feature.settings.data.dao.SettingsDao
 import com.driverwallet.app.shared.data.dao.TransactionDao
@@ -82,6 +84,50 @@ private val MIGRATION_4_5 = object : Migration(4, 5) {
     }
 }
 
+/**
+ * Fase 3: Multi-type debt support.
+ * - Add debt_type column to debts (default 'installment' for backward compat)
+ * - Add 5 nullable detail columns to debts
+ * - Create debt_payments table (PERSONAL/TAB flexible payments)
+ * - Create kasbon_entries table (TAB debt increases)
+ */
+private val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // 1. ALTER debts: add type + detail columns
+        db.execSQL("ALTER TABLE `debts` ADD COLUMN `debt_type` TEXT NOT NULL DEFAULT 'installment'")
+        db.execSQL("ALTER TABLE `debts` ADD COLUMN `borrower_name` TEXT")
+        db.execSQL("ALTER TABLE `debts` ADD COLUMN `relationship` TEXT")
+        db.execSQL("ALTER TABLE `debts` ADD COLUMN `agreed_return_date` TEXT")
+        db.execSQL("ALTER TABLE `debts` ADD COLUMN `merchant_name` TEXT")
+        db.execSQL("ALTER TABLE `debts` ADD COLUMN `merchant_type` TEXT")
+
+        // 2. CREATE debt_payments
+        db.execSQL(
+            """CREATE TABLE IF NOT EXISTS `debt_payments` (
+                `id` TEXT NOT NULL PRIMARY KEY,
+                `debt_id` TEXT NOT NULL,
+                `amount` INTEGER NOT NULL,
+                `note` TEXT NOT NULL DEFAULT '',
+                `paid_at` TEXT NOT NULL,
+                `created_at` TEXT NOT NULL
+            )""".trimIndent()
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_payments_debt_id` ON `debt_payments` (`debt_id`)")
+
+        // 3. CREATE kasbon_entries
+        db.execSQL(
+            """CREATE TABLE IF NOT EXISTS `kasbon_entries` (
+                `id` TEXT NOT NULL PRIMARY KEY,
+                `debt_id` TEXT NOT NULL,
+                `amount` INTEGER NOT NULL,
+                `note` TEXT NOT NULL DEFAULT '',
+                `created_at` TEXT NOT NULL
+            )""".trimIndent()
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_kasbon_entries_debt_id` ON `kasbon_entries` (`debt_id`)")
+    }
+}
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -94,7 +140,13 @@ object DatabaseModule {
             AppDatabase::class.java,
             "driver_wallet.db",
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+            .addMigrations(
+                MIGRATION_1_2,
+                MIGRATION_2_3,
+                MIGRATION_3_4,
+                MIGRATION_4_5,
+                MIGRATION_5_6,
+            )
             .addCallback(DatabaseCallback())
             .build()
 
@@ -106,6 +158,8 @@ object DatabaseModule {
     @Provides fun provideTransactionDao(db: AppDatabase): TransactionDao = db.transactionDao()
     @Provides fun provideDebtDao(db: AppDatabase): DebtDao = db.debtDao()
     @Provides fun provideDebtScheduleDao(db: AppDatabase): DebtScheduleDao = db.debtScheduleDao()
+    @Provides fun provideDebtPaymentDao(db: AppDatabase): DebtPaymentDao = db.debtPaymentDao()
+    @Provides fun provideKasbonEntryDao(db: AppDatabase): KasbonEntryDao = db.kasbonEntryDao()
     @Provides fun provideRecurringExpenseDao(db: AppDatabase): RecurringExpenseDao = db.recurringExpenseDao()
     @Provides fun provideSettingsDao(db: AppDatabase): SettingsDao = db.settingsDao()
 }
