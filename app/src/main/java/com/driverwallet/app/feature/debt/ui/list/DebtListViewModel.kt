@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
 import com.driverwallet.app.core.util.CurrencyFormatter
 import com.driverwallet.app.feature.debt.domain.DebtRepository
+import com.driverwallet.app.feature.debt.domain.model.ScheduleStatus
 import com.driverwallet.app.feature.debt.domain.usecase.GetActiveDebtsUseCase
 import com.driverwallet.app.feature.debt.domain.usecase.PayDebtInstallmentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +46,7 @@ class DebtListViewModel @Inject constructor(
                 } else {
                     val totalRemaining = debtRepository.observeTotalRemaining().first()
                     val hasOverdue = debts.any { info ->
-                        info.nextSchedule?.status == "overdue"
+                        info.nextSchedule?.status == ScheduleStatus.OVERDUE
                     }
                     _uiState.value = DebtListUiState.Success(
                         totalRemaining = totalRemaining,

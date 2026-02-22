@@ -1,6 +1,7 @@
 package com.driverwallet.app.feature.debt.data
 
 import com.driverwallet.app.core.database.TransactionRunner
+import com.driverwallet.app.core.model.TransactionSource
 import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.core.model.nowJakarta
 import com.driverwallet.app.core.util.UuidGenerator
@@ -12,6 +13,7 @@ import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.debt.domain.DebtWithScheduleInfo
 import com.driverwallet.app.feature.debt.domain.model.Debt
 import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
+import com.driverwallet.app.feature.debt.domain.model.DebtStatus
 import com.driverwallet.app.feature.debt.domain.model.UpcomingDue
 import com.driverwallet.app.shared.data.dao.TransactionDao
 import com.driverwallet.app.shared.data.entity.TransactionEntity
@@ -56,7 +58,7 @@ class DebtRepositoryImpl @Inject constructor(
      * Atomic 4-step payment:
      * 1. Update remaining amount on debt
      * 2. Mark schedule as paid
-     * 3. Insert expense transaction (category = debt_payment)
+     * 3. Insert expense transaction (source = DEBT_PAYMENT)
      * 4. Auto-complete debt if remaining = 0
      */
     override suspend fun payInstallment(
@@ -83,6 +85,7 @@ class DebtRepositoryImpl @Inject constructor(
                     category = "debt_payment",
                     amount = amount,
                     note = "Bayar cicilan ${debt.name}",
+                    source = TransactionSource.DEBT_PAYMENT.value,
                     debtId = debtId,
                     createdAt = now,
                     updatedAt = now,
@@ -91,7 +94,7 @@ class DebtRepositoryImpl @Inject constructor(
 
             // 4. Auto-complete if fully paid
             if (newRemaining == 0L) {
-                debtDao.updateStatus(debtId, "completed", now)
+                debtDao.updateStatus(debtId, DebtStatus.COMPLETED.value, now)
             }
         }
     }
