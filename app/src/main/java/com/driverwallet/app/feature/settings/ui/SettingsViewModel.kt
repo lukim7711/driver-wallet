@@ -75,7 +75,18 @@ class SettingsViewModel @Inject constructor(
     private fun observeMonthlyExpenses() {
         viewModelScope.launch {
             settingsRepository.observeMonthlyExpenses().collect { expenses ->
-                _uiState.update { it.copy(monthlyExpenses = expenses) }
+                _uiState.update {
+                    it.copy(
+                        monthlyExpenses = expenses.map { expense ->
+                            FixedExpenseDisplay(
+                                id = expense.id,
+                                name = expense.name,
+                                icon = expense.icon,
+                                amount = expense.amount,
+                            )
+                        },
+                    )
+                }
             }
         }
     }
@@ -83,7 +94,18 @@ class SettingsViewModel @Inject constructor(
     private fun observeDailyExpenses() {
         viewModelScope.launch {
             settingsRepository.observeDailyExpenses().collect { expenses ->
-                _uiState.update { it.copy(dailyExpenses = expenses) }
+                _uiState.update {
+                    it.copy(
+                        dailyExpenses = expenses.map { expense ->
+                            FixedExpenseDisplay(
+                                id = expense.id,
+                                name = expense.name,
+                                icon = expense.icon,
+                                amount = expense.amount,
+                            )
+                        },
+                    )
+                }
             }
         }
     }

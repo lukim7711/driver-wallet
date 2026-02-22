@@ -23,13 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.util.CurrencyFormatter
-
-data class FixedExpenseDisplay(
-    val id: Long,
-    val name: String,
-    val icon: String,
-    val amount: Long,
-)
+import com.driverwallet.app.feature.settings.ui.FixedExpenseDisplay
 
 @Composable
 fun FixedExpenseSection(

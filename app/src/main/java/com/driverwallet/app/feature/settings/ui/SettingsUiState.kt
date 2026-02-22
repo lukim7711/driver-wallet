@@ -1,7 +1,14 @@
 package com.driverwallet.app.feature.settings.ui
 
-import com.driverwallet.app.feature.settings.domain.model.DailyExpense
-import com.driverwallet.app.feature.settings.domain.model.MonthlyExpense
+import androidx.compose.runtime.Immutable
+
+@Immutable
+data class FixedExpenseDisplay(
+    val id: Long,
+    val name: String,
+    val icon: String,
+    val amount: Long,
+)
 
 data class SettingsUiState(
     val isDarkMode: Boolean = false,
@@ -10,8 +17,8 @@ data class SettingsUiState(
     val budgetRokok: String = "",
     val budgetPulsa: String = "",
     val targetDate: String = "",
-    val monthlyExpenses: List<MonthlyExpense> = emptyList(),
-    val dailyExpenses: List<DailyExpense> = emptyList(),
+    val monthlyExpenses: List<FixedExpenseDisplay> = emptyList(),
+    val dailyExpenses: List<FixedExpenseDisplay> = emptyList(),
     val isSaving: Boolean = false,
     val showExpenseDialog: Boolean = false,
     val editingExpense: EditingExpense? = null,

@@ -29,7 +29,6 @@ import com.driverwallet.app.core.ui.util.ObserveAsEvents
 import com.driverwallet.app.feature.settings.ui.component.BudgetSection
 import com.driverwallet.app.feature.settings.ui.component.DarkModeToggle
 import com.driverwallet.app.feature.settings.ui.component.ExpenseFormDialog
-import com.driverwallet.app.feature.settings.ui.component.FixedExpenseDisplay
 import com.driverwallet.app.feature.settings.ui.component.FixedExpenseSection
 import com.driverwallet.app.feature.settings.ui.component.TargetDateRow
 
@@ -102,16 +101,14 @@ fun SettingsScreen(
                 )
             }
 
-            // Monthly Expenses
+            // Monthly Expenses — mapped in ViewModel, no allocation here
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                 Spacer(modifier = Modifier.height(8.dp))
                 FixedExpenseSection(
                     title = "Pengeluaran Tetap Bulanan",
-                    expenses = uiState.monthlyExpenses.map {
-                        FixedExpenseDisplay(it.id, it.name, it.icon, it.amount)
-                    },
+                    expenses = uiState.monthlyExpenses,
                     onAdd = { viewModel.onAction(SettingsUiAction.ShowAddExpense(isMonthly = true)) },
                     onEdit = { expense ->
                         viewModel.onAction(
@@ -130,14 +127,12 @@ fun SettingsScreen(
                 )
             }
 
-            // Daily Expenses
+            // Daily Expenses — mapped in ViewModel, no allocation here
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 FixedExpenseSection(
                     title = "Pengeluaran Tetap Harian",
-                    expenses = uiState.dailyExpenses.map {
-                        FixedExpenseDisplay(it.id, it.name, it.icon, it.amount)
-                    },
+                    expenses = uiState.dailyExpenses,
                     onAdd = { viewModel.onAction(SettingsUiAction.ShowAddExpense(isMonthly = false)) },
                     onEdit = { expense ->
                         viewModel.onAction(
