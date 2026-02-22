@@ -9,16 +9,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.driverwallet.app.core.ui.navigation.AppNavigation
 import com.driverwallet.app.core.ui.theme.DriverWalletTheme
-import com.driverwallet.app.feature.settings.domain.SettingsRepository
 import com.driverwallet.app.feature.settings.ui.ThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var settingsRepository: SettingsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +23,7 @@ class MainActivity : ComponentActivity() {
             val isDarkMode by themeViewModel.isDarkMode.collectAsStateWithLifecycle()
 
             DriverWalletTheme(darkTheme = isDarkMode) {
-                AppNavigation(settingsRepository = settingsRepository)
+                AppNavigation()
             }
         }
     }

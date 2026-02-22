@@ -2,7 +2,6 @@ package com.driverwallet.app.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.driverwallet.app.feature.debt.data.dao.DebtDao
 import com.driverwallet.app.feature.debt.data.dao.DebtScheduleDao
 import com.driverwallet.app.feature.debt.data.entity.DebtEntity
@@ -28,10 +27,9 @@ import com.driverwallet.app.shared.data.entity.TransactionEntity
         DailyExpenseEntity::class,
         SettingsEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
-@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
     abstract fun debtDao(): DebtDao
