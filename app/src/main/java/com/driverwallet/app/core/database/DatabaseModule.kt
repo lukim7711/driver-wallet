@@ -43,6 +43,11 @@ object DatabaseModule {
             .addCallback(DatabaseCallback())
             .build()
 
+    @Provides
+    @Singleton
+    fun provideTransactionRunner(database: AppDatabase): TransactionRunner =
+        RoomTransactionRunner(database)
+
     @Provides fun provideTransactionDao(db: AppDatabase): TransactionDao = db.transactionDao()
     @Provides fun provideDebtDao(db: AppDatabase): DebtDao = db.debtDao()
     @Provides fun provideDebtScheduleDao(db: AppDatabase): DebtScheduleDao = db.debtScheduleDao()
