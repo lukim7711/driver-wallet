@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Input Transaksi Google Material You</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6750A4", // Material You Purple
+                        "primary-dark": "#4F378B",
+                        "primary-container": "#EADDFF",
+                        "on-primary-container": "#21005D",
+                        "secondary": "#625B71",
+                        "secondary-container": "#E8DEF8",
+                        "tertiary": "#7D5260",
+                        "tertiary-container": "#FFD8E4",
+                        "surface": "#FEF7FF",
+                        "surface-variant": "#E7E0EC",
+                        "on-surface-variant": "#49454F",
+                        "outline": "#79747E",
+                        "background": "#FFFBFE",
+                        "blue-container": "#E8F0FE",
+                        "blue-on-container": "#0b57d0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.75rem", "full": "9999px"},
+                    boxShadow: {
+                        'elevation-1': '0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+                        'elevation-2': '0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 300,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        .material-symbols-outlined.filled {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }.ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(103, 80, 164, 0.1) 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        .ripple:active::after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-display antialiased text-slate-900 flex flex-col h-screen overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<header class="px-4 pt-12 pb-2 z-10 bg-background">
+<div class="flex items-center justify-between mb-6">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors ripple text-on-surface-variant">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="bg-surface-variant h-[3.25rem] p-1 rounded-full flex relative w-[180px]">
+<div class="absolute inset-y-1 left-1 w-[calc(50%-4px)] bg-primary-container rounded-full shadow-sm transition-all duration-300 ease-out z-0"></div>
+<button class="relative z-10 w-1/2 h-full rounded-full flex items-center justify-center text-on-primary-container font-medium text-sm tracking-wide transition-colors">
+                MASUK
+            </button>
+<button class="relative z-10 w-1/2 h-full rounded-full flex items-center justify-center text-on-surface-variant font-medium text-sm tracking-wide hover:text-slate-900 transition-colors">
+                KELUAR
+            </button>
+</div>
+<div class="w-10"></div>
+</div>
+</header>
+<main class="flex-1 flex flex-col px-6 overflow-hidden">
+<div class="mb-4">
+<div class="flex justify-between items-center px-2 mb-4">
+<p class="text-sm font-medium text-on-surface-variant tracking-wide">Kategori</p>
+<button class="text-xs font-bold text-primary px-2 py-1 rounded-full hover:bg-primary-container hover:bg-opacity-30 transition-colors">Lihat Semua</button>
+</div>
+<div class="flex justify-between gap-4">
+<button class="flex flex-col items-center gap-2 group w-1/4">
+<div class="w-16 h-16 rounded-[20px] bg-primary-container text-on-primary-container flex items-center justify-center transition-all active:scale-95 active:shadow-inner">
+<span class="material-symbols-outlined filled text-[28px]">shopping_bag</span>
+</div>
+<span class="text-xs font-semibold text-on-surface-variant tracking-tight">Order</span>
+</button>
+<button class="flex flex-col items-center gap-2 group w-1/4">
+<div class="w-16 h-16 rounded-[20px] bg-surface-variant text-on-surface-variant flex items-center justify-center transition-all hover:bg-secondary-container active:scale-95">
+<span class="material-symbols-outlined text-[28px]">savings</span>
+</div>
+<span class="text-xs font-medium text-outline">Tips</span>
+</button>
+<button class="flex flex-col items-center gap-2 group w-1/4">
+<div class="w-16 h-16 rounded-[20px] bg-surface-variant text-on-surface-variant flex items-center justify-center transition-all hover:bg-secondary-container active:scale-95">
+<span class="material-symbols-outlined text-[28px]">redeem</span>
+</div>
+<span class="text-xs font-medium text-outline">Bonus</span>
+</button>
+<button class="flex flex-col items-center gap-2 group w-1/4">
+<div class="w-16 h-16 rounded-[20px] bg-surface-variant text-on-surface-variant flex items-center justify-center transition-all hover:bg-secondary-container active:scale-95">
+<span class="material-symbols-outlined text-[28px]">more_horiz</span>
+</div>
+<span class="text-xs font-medium text-outline">Lainnya</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center py-4 flex-grow">
+<div class="flex items-baseline justify-center gap-1 w-full relative">
+<span class="text-3xl font-medium text-outline self-start mt-4">Rp</span>
+<input class="text-[5rem] leading-none font-normal text-primary bg-transparent border-none text-right w-auto min-w-[100px] max-w-[85%] p-0 focus:ring-0 cursor-text caret-primary tracking-tighter placeholder-surface-variant/50" inputmode="numeric" placeholder="0" readonly="" type="text" value="15.000"/>
+</div>
+<div class="mt-8 w-full max-w-[90%] mx-auto">
+<div class="flex items-center gap-3 py-3 px-4 bg-surface-variant/50 rounded-2xl border border-transparent focus-within:border-primary focus-within:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-outline text-[22px]">edit</span>
+<input class="w-full bg-transparent border-none p-0 text-base focus:ring-0 text-on-surface-variant placeholder:text-outline" placeholder="Tambah catatan..." type="text"/>
+</div>
+</div>
+<div class="flex justify-center gap-3 mt-6">
+<button class="px-5 py-2 bg-surface-variant rounded-xl border border-transparent hover:border-primary/20 hover:bg-secondary-container/50 active:scale-95 transition-all text-on-surface-variant font-medium text-sm ripple">
+                +10rb
+            </button>
+<button class="px-5 py-2 bg-surface-variant rounded-xl border border-transparent hover:border-primary/20 hover:bg-secondary-container/50 active:scale-95 transition-all text-on-surface-variant font-medium text-sm ripple">
+                +20rb
+            </button>
+<button class="px-5 py-2 bg-surface-variant rounded-xl border border-transparent hover:border-primary/20 hover:bg-secondary-container/50 active:scale-95 transition-all text-on-surface-variant font-medium text-sm ripple">
+                +50rb
+            </button>
+</div>
+</div>
+<div class="pb-24 pt-2 bg-background">
+<div class="grid grid-cols-3 gap-y-2 gap-x-4 mb-6 px-4">
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">1</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">2</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">3</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">4</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">5</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">6</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">7</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">8</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">9</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">.</button>
+<button class="h-16 rounded-full text-2xl font-normal text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors ripple">0</button>
+<button class="h-16 rounded-full text-on-surface-variant hover:bg-surface-variant/50 active:bg-surface-variant transition-colors flex items-center justify-center ripple">
+<span class="material-symbols-outlined text-[24px]">backspace</span>
+</button>
+</div>
+<div class="px-6">
+<button class="w-full bg-primary hover:bg-primary-dark text-white font-medium text-lg py-4 rounded-full shadow-md hover:shadow-lg active:shadow-sm active:translate-y-[1px] transition-all flex items-center justify-center gap-2 ripple overflow-hidden">
+                SIMPAN
+            </button>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 w-full bg-surface-variant/30 backdrop-blur-md border-t border-surface-variant/50 pb-6 pt-3 px-2 flex justify-between items-center z-50">
+<a class="flex flex-col items-center gap-1 w-1/5 text-outline hover:text-on-surface-variant transition-colors group" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[24px]">home</span>
+</div>
+<span class="text-[11px] font-medium tracking-wide">Beranda</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-1/5 text-primary transition-colors group" href="#">
+<div class="h-8 w-16 bg-primary-container rounded-full flex items-center justify-center transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[24px] filled text-on-primary-container">add_circle</span>
+</div>
+<span class="text-[11px] font-bold tracking-wide text-on-surface-variant">Input</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-1/5 text-outline hover:text-on-surface-variant transition-colors group" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+</div>
+<span class="text-[11px] font-medium tracking-wide">Hutang</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-1/5 text-outline hover:text-on-surface-variant transition-colors group" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[24px]">bar_chart</span>
+</div>
+<span class="text-[11px] font-medium tracking-wide">Laporan</span>
+</a>
+<a class="flex flex-col items-center gap-1 w-1/5 text-outline hover:text-on-surface-variant transition-colors group" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+</div>
+<span class="text-[11px] font-medium tracking-wide">Pengaturan</span>
+</a>
+</nav>
+
+</body></html>

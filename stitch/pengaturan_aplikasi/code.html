@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pengaturan Aplikasi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6750A4", 
+                        "on-primary": "#FFFFFF",
+                        "primary-container": "#EADDFF",
+                        "on-primary-container": "#21005D",
+                        "secondary": "#625B71",
+                        "secondary-container": "#E8DEF8",
+                        "on-secondary-container": "#1D192B",
+                        "surface": "#FFFBFE",
+                        "surface-variant": "#E7E0EC",
+                        "on-surface": "#1C1B1F",
+                        "on-surface-variant": "#49454F",
+                        "outline": "#79747E",
+                        "background": "#FFFBFE",
+                        "section-header": "#607D8B",},
+                    fontFamily: {
+                        "sans": ["Google Sans", "Roboto", "sans-serif"],
+                        "display": ["Google Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'elevation-1': '0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)',
+                        'elevation-2': '0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #FFFBFE;}
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .m3-input-container {
+            position: relative;
+            background-color: #F7F2FA;border-radius: 4px 4px 0 0;
+            border-bottom: 1px solid #79747E;
+        }
+        .m3-input-container:hover {
+            background-color: #ECE6F0;
+        }
+        .m3-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid transparent; 
+            border-radius: 4px 4px 0 0;
+            padding: 24px 16px 8px 16px;
+            background-color: transparent;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1C1B1F;
+            transition: all 0.2s ease;
+        }
+        .m3-input:focus {
+            outline: none;
+            border-bottom: 2px solid #6750A4;
+            padding-bottom: 7px;box-shadow: none;
+            --tw-ring-color: transparent;
+        }[type='text']:focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {
+             box-shadow: none;
+             border-color: transparent;
+        }
+        .m3-label {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #49454F;
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+        .m3-input:focus ~ .m3-label,
+        .m3-input:not(:placeholder-shown) ~ .m3-label {
+            top: 8px;
+            transform: translateY(0);
+            font-size: 12px;
+            line-height: 16px;
+            color: #6750A4;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-sans overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<header class="bg-surface/95 backdrop-blur-sm sticky top-0 z-50 px-4 py-3 flex items-center gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/30 active:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="text-[22px] font-normal text-on-surface flex-1">Pengaturan</h1>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/30 active:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface">search</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-sm font-medium">
+            A
+        </div>
+</header>
+<main class="flex-1 overflow-y-auto pb-32 no-scrollbar">
+<div class="max-w-md mx-auto w-full pt-2">
+<section class="mb-2">
+<h2 class="px-6 py-4 text-sm font-medium text-section-header tracking-wide">Preferensi Umum</h2>
+<div class="px-4 space-y-4">
+<div class="flex items-center justify-between px-2 py-2">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant text-2xl">dark_mode</span>
+<div class="flex flex-col">
+<span class="text-base text-on-surface font-normal">Mode Gelap</span>
+<span class="text-sm text-on-surface-variant">Nonaktif</span>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-outline after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:bg-white peer-checked:after:w-6 peer-checked:after:h-6 peer-checked:after:top-[0px] peer-checked:after:left-[0px] peer-checked:after:shadow-md after:scale-75 peer-checked:after:scale-100"></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="border-t border-outline/10 mx-6 my-2"/>
+<section class="mb-6">
+<h2 class="px-6 py-4 text-sm font-medium text-section-header tracking-wide">Budget Harian</h2>
+<div class="px-4 space-y-4 pt-1">
+<div class="m3-input-container">
+<input class="m3-input peer" id="budget-bbm" name="budget-bbm" placeholder=" " type="number" value="30000"/>
+<label class="m3-label" for="budget-bbm">BBM</label>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">Rp</div>
+</div>
+<div class="m3-input-container">
+<input class="m3-input peer" id="budget-makan" name="budget-makan" placeholder=" " type="number" value="50000"/>
+<label class="m3-label" for="budget-makan">Makan</label>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">Rp</div>
+</div>
+<div class="m3-input-container">
+<input class="m3-input peer" id="budget-rokok" name="budget-rokok" placeholder=" " type="number" value="25000"/>
+<label class="m3-label" for="budget-rokok">Rokok</label>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">Rp</div>
+</div>
+<div class="m3-input-container">
+<input class="m3-input peer" id="budget-pulsa" name="budget-pulsa" placeholder=" " type="number" value="5000"/>
+<label class="m3-label" for="budget-pulsa">Pulsa / Data</label>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">Rp</div>
+</div>
+</div>
+</section>
+<hr class="border-t border-outline/10 mx-6 my-2"/>
+<section class="mb-4 pt-2">
+<h2 class="px-6 py-3 text-sm font-medium text-section-header tracking-wide">Target &amp; Perencanaan</h2>
+<div class="px-2">
+<button class="w-full flex items-center justify-between px-4 py-4 rounded-full hover:bg-surface-variant/30 active:bg-surface-variant/50 transition-colors text-left group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant text-2xl">event</span>
+<div class="flex flex-col">
+<span class="text-base text-on-surface font-normal">Target tanggal lunas</span>
+<span class="text-sm text-primary">31 Des 2024</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/50 group-hover:text-primary transition-colors">edit</span>
+</button>
+</div>
+</section>
+<hr class="border-t border-outline/10 mx-6 my-2"/>
+<section class="mb-4 pt-2">
+<div class="flex items-center justify-between px-6 py-3">
+<h2 class="text-sm font-medium text-section-header tracking-wide">Pengeluaran Tetap Bulanan</h2>
+<button class="text-primary hover:bg-primary-container/30 px-4 py-2 rounded-full text-sm font-medium transition-colors">Tambah</button>
+</div>
+<div class="px-2 space-y-1">
+<div class="flex items-center justify-between px-4 py-4 rounded-xl hover:bg-surface-variant/30 active:bg-surface-variant/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[20px]">home</span>
+</div>
+<div>
+<h3 class="text-base font-normal text-on-surface">Rumah Tangga</h3>
+<p class="text-sm text-on-surface-variant">Bayar Kontrakan</p>
+</div>
+</div>
+<span class="text-sm font-medium text-on-surface">Rp 800rb</span>
+</div>
+<div class="flex items-center justify-between px-4 py-4 rounded-xl hover:bg-surface-variant/30 active:bg-surface-variant/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<div>
+<h3 class="text-base font-normal text-on-surface">SPP Anak</h3>
+<p class="text-sm text-on-surface-variant">Sekolah Dasar</p>
+</div>
+</div>
+<span class="text-sm font-medium text-on-surface">Rp 250rb</span>
+</div>
+</div>
+</section>
+<hr class="border-t border-outline/10 mx-6 my-2"/>
+<section class="mb-4 pt-2">
+<div class="flex items-center justify-between px-6 py-3">
+<h2 class="text-sm font-medium text-section-header tracking-wide">Pengeluaran Tetap Harian</h2>
+<button class="text-primary hover:bg-primary-container/30 px-4 py-2 rounded-full text-sm font-medium transition-colors">Tambah</button>
+</div>
+<div class="px-2">
+<div class="flex items-center justify-between px-4 py-4 rounded-xl hover:bg-surface-variant/30 active:bg-surface-variant/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[20px]">local_parking</span>
+</div>
+<div>
+<h3 class="text-base font-normal text-on-surface">Parkir</h3>
+<p class="text-sm text-on-surface-variant">Langganan Stasiun</p>
+</div>
+</div>
+<span class="text-sm font-medium text-on-surface">Rp 2rb</span>
+</div>
+</div>
+</section>
+</div>
+<div class="flex justify-end mt-4 px-6 mb-8">
+<button class="bg-primary-container hover:bg-[#D0BCFF] text-on-primary-container font-medium h-14 rounded-[16px] shadow-elevation-1 hover:shadow-elevation-2 transition-all flex items-center justify-center gap-2 px-6">
+<span class="material-symbols-outlined">save</span>
+<span class="pr-2">Simpan Perubahan</span>
+</button>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-md border-t border-outline/10 pb-safe z-50 h-[80px]">
+<div class="flex items-center justify-center h-full max-w-md mx-auto px-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 group text-on-surface-variant" href="#">
+<div class="px-5 py-1 rounded-full group-hover:bg-on-surface/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">home</span>
+</div>
+<span class="text-[12px] font-medium">Beranda</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 group text-on-surface-variant" href="#">
+<div class="px-5 py-1 rounded-full group-hover:bg-on-surface/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+</div>
+<span class="text-[12px] font-medium">Input</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 group text-on-surface-variant" href="#">
+<div class="px-5 py-1 rounded-full group-hover:bg-on-surface/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">credit_card</span>
+</div>
+<span class="text-[12px] font-medium">Hutang</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 group text-on-surface-variant" href="#">
+<div class="px-5 py-1 rounded-full group-hover:bg-on-surface/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">bar_chart</span>
+</div>
+<span class="text-[12px] font-medium">Laporan</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-on-surface" href="#">
+<div class="bg-primary-container px-5 py-1 rounded-full">
+<span class="material-symbols-filled text-[24px] text-on-primary-container">settings</span>
+</div>
+<span class="text-[12px] font-bold text-on-surface">Pengaturan</span>
+</a>
+</div>
+</nav>
+
+</body></html>

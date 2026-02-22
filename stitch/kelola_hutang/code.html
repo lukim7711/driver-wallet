@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kelola Hutang Material You</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6750A4", // M3 Purple 40
+              "primary-dark": "#4F378B",
+              "on-primary": "#FFFFFF",
+              "background-light": "#FFFBFE", // M3 Surface
+              "background-dark": "#1C1B1F",
+              "surface-light": "#F7F2FA", // Surface variant light (purple tinted)
+              "surface-dark": "#2a2830", // Darker surface
+              "text-main": "#1C1B1F",
+              "text-secondary": "#49454F",
+              "outline-variant": "#CAC4D0",
+              "secondary-container": "#E8DEF8", // Light purple container
+              "on-secondary-container": "#1D192B",
+              "tertiary-container": "#FFD8E4",
+              "badge-active-bg": "#E8F0FE", // Light blue tint
+              "badge-active-text": "#0F4698", // Dark blue text
+              "progress-start": "#A5B4FC", // Soft blue
+              "progress-end": "#9333EA", // Vibrant purple
+              "violet-btn": "#6750A4",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            boxShadow: {
+              'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+              'elevation-1': '0 2px 4px rgba(0,0,0,0.05)',
+            },
+            borderRadius: {
+                '3xl': '1.75rem',
+                '4xl': '2rem',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .bg-gradient-progress {
+            background: linear-gradient(90deg, #A5B4FC 0%, #9333EA 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md px-5 h-16 flex items-center justify-between">
+<h1 class="text-2xl font-semibold tracking-tight text-text-main dark:text-white">Kelola Hutang</h1>
+<button aria-label="Tambah Hutang" class="flex items-center justify-center w-10 h-10 rounded-full bg-secondary-container hover:bg-primary/10 text-on-secondary-container transition-colors duration-200">
+<span class="material-symbols-outlined text-2xl font-normal">add</span>
+</button>
+</header>
+<main class="flex-1 px-5 pb-32 space-y-6 pt-2">
+<div class="bg-primary rounded-[2rem] p-6 text-on-primary shadow-sm relative overflow-hidden">
+<div class="absolute right-0 top-0 opacity-10 transform translate-x-1/6 -translate-y-1/6">
+<span class="material-symbols-outlined text-[140px]">account_balance_wallet</span>
+</div>
+<div class="relative z-10">
+<p class="text-on-primary/90 text-sm font-medium tracking-wide mb-1">Total Sisa Hutang</p>
+<h2 class="text-4xl font-semibold tracking-tight mb-6">Rp 3.750.000</h2>
+<div class="flex items-start gap-3 bg-white/10 w-fit pr-4 pl-3 py-2 rounded-xl backdrop-blur-sm border border-white/10">
+<span class="material-symbols-outlined text-tertiary-container text-xl">warning</span>
+<div>
+<p class="text-xs text-on-primary/90 font-medium">Perhatian</p>
+<p class="text-xs text-on-primary/80">1 Jatuh tempo minggu ini</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<h3 class="text-lg font-semibold text-text-main dark:text-white">Daftar Pinjaman</h3>
+<button class="text-sm font-medium text-primary hover:bg-primary/5 px-3 py-1.5 rounded-full transition-colors">Lihat Riwayat</button>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-[1.5rem] p-5 border border-white/50 dark:border-white/5 flex flex-col gap-5">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
+<span class="material-symbols-outlined text-2xl">shopping_bag</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-text-main dark:text-white leading-tight">Shopee Pinjam</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 mt-0.5">Pinjaman Tunai</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-badge-active-bg dark:bg-blue-900/30 text-badge-active-text dark:text-blue-200 text-xs font-medium">Aktif</span>
+</div>
+<div class="pl-0">
+<div class="flex justify-between items-end mb-2">
+<p class="text-sm text-text-secondary dark:text-gray-400">Sisa Hutang</p>
+<p class="text-xl font-semibold text-text-main dark:text-white">Rp 2.500.000</p>
+</div>
+<div class="space-y-3">
+<div class="h-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-progress rounded-full" style="width: 50%"></div>
+</div>
+<div class="flex justify-between text-xs text-text-secondary dark:text-gray-400 font-medium">
+<span>Cicilan 3 dari 6</span>
+<span>50% Lunas</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 text-xs text-text-secondary dark:text-gray-400 bg-white dark:bg-white/5 p-3 rounded-xl border border-gray-200/50 dark:border-white/5">
+<span class="material-symbols-outlined text-orange-500 text-lg">calendar_clock</span>
+<p>
+                    Jatuh tempo <span class="font-semibold text-orange-700 dark:text-orange-400">25 Okt</span> • Bunga 2.5%
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 py-3 text-sm font-medium text-primary hover:bg-primary/5 rounded-full transition-colors border border-transparent">
+                Detail
+            </button>
+<button class="flex-1 py-3 px-4 bg-violet-btn hover:bg-primary-dark text-white text-sm font-medium rounded-full shadow-md transition-colors flex items-center justify-center gap-2">
+                Bayar
+            </button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-[1.5rem] p-5 border border-white/50 dark:border-white/5 flex flex-col gap-5">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+<span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-text-main dark:text-white leading-tight">GoPay Later</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 mt-0.5">PayLater</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-badge-active-bg dark:bg-blue-900/30 text-badge-active-text dark:text-blue-200 text-xs font-medium">Aktif</span>
+</div>
+<div class="pl-0">
+<div class="flex justify-between items-end mb-2">
+<p class="text-sm text-text-secondary dark:text-gray-400">Sisa Hutang</p>
+<p class="text-xl font-semibold text-text-main dark:text-white">Rp 500.000</p>
+</div>
+<div class="space-y-3">
+<div class="h-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-progress rounded-full" style="width: 10%"></div>
+</div>
+<div class="flex justify-between text-xs text-text-secondary dark:text-gray-400 font-medium">
+<span>Cicilan 1 dari 1</span>
+<span>0% Lunas</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 text-xs text-text-secondary dark:text-gray-400 bg-white dark:bg-white/5 p-3 rounded-xl border border-gray-200/50 dark:border-white/5">
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400 text-lg">calendar_today</span>
+<p>
+                    Jatuh tempo <span class="font-semibold text-text-main dark:text-white">01 Nov</span> • Bunga 0% (Promo)
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 py-3 text-sm font-medium text-primary hover:bg-primary/5 rounded-full transition-colors border border-transparent">
+                Detail
+            </button>
+<button class="flex-1 py-3 px-4 bg-violet-btn hover:bg-primary-dark text-white text-sm font-medium rounded-full shadow-md transition-colors flex items-center justify-center gap-2">
+                Bayar
+            </button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-[1.5rem] p-5 border border-white/50 dark:border-white/5 flex flex-col gap-5 opacity-75">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center text-orange-500 shrink-0">
+<span class="material-symbols-outlined text-2xl">credit_card</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-text-main dark:text-white leading-tight">Kredivo</h4>
+<p class="text-xs text-text-secondary dark:text-gray-400 mt-0.5">Cicilan Barang</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-secondary-container dark:bg-purple-900/30 text-on-secondary-container dark:text-purple-200 text-xs font-medium">Lunas 80%</span>
+</div>
+<div class="pl-0">
+<div class="flex justify-between items-end mb-2">
+<p class="text-sm text-text-secondary dark:text-gray-400">Sisa Hutang</p>
+<p class="text-xl font-semibold text-text-main dark:text-white">Rp 750.000</p>
+</div>
+<div class="space-y-3">
+<div class="h-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-progress rounded-full" style="width: 83%"></div>
+</div>
+<div class="flex justify-between text-xs text-text-secondary dark:text-gray-400 font-medium">
+<span>Cicilan 10 dari 12</span>
+<span>83% Lunas</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 text-xs text-text-secondary dark:text-gray-400 bg-white dark:bg-white/5 p-3 rounded-xl border border-gray-200/50 dark:border-white/5">
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400 text-lg">calendar_today</span>
+<p>
+                    Jatuh tempo <span class="font-semibold text-text-main dark:text-white">15 Nov</span> • Bunga 2.95%
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 py-3 text-sm font-medium text-primary hover:bg-primary/5 rounded-full transition-colors border border-transparent">
+                Detail
+            </button>
+<button class="flex-1 py-3 px-4 bg-gray-200 hover:bg-gray-300 dark:bg-white/10 dark:hover:bg-white/20 text-text-main dark:text-white text-sm font-medium rounded-full transition-colors flex items-center justify-center gap-2">
+                Bayar
+            </button>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 w-full bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-white/10 pb-safe z-40">
+<div class="flex justify-around items-center px-2 py-3">
+<a class="flex flex-col items-center gap-1 group min-w-[64px]" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-secondary-container/50 dark:group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400 text-2xl">home</span>
+</div>
+<span class="text-[11px] font-medium text-text-secondary dark:text-gray-400">Beranda</span>
+</a>
+<a class="flex flex-col items-center gap-1 group min-w-[64px]" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-secondary-container/50 dark:group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400 text-2xl">add_circle</span>
+</div>
+<span class="text-[11px] font-medium text-text-secondary dark:text-gray-400">Input</span>
+</a>
+<a class="flex flex-col items-center gap-1 group min-w-[64px]" href="#">
+<div class="h-8 w-16 rounded-full bg-secondary-container dark:bg-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-on-secondary-container dark:text-white text-2xl fill-1">account_balance_wallet</span>
+</div>
+<span class="text-[11px] font-bold text-text-main dark:text-white">Hutang</span>
+</a>
+<a class="flex flex-col items-center gap-1 group min-w-[64px]" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-secondary-container/50 dark:group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400 text-2xl">bar_chart</span>
+</div>
+<span class="text-[11px] font-medium text-text-secondary dark:text-gray-400">Laporan</span>
+</a>
+<a class="flex flex-col items-center gap-1 group min-w-[64px]" href="#">
+<div class="h-8 w-16 rounded-full flex items-center justify-center group-hover:bg-secondary-container/50 dark:group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-text-secondary dark:text-gray-400 text-2xl">settings</span>
+</div>
+<span class="text-[11px] font-medium text-text-secondary dark:text-gray-400">Pengaturan</span>
+</a>
+</div>
+</nav>
+<div class="h-[env(safe-area-inset-bottom)] bg-background-light dark:bg-background-dark"></div>
+
+</body></html>
