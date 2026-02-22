@@ -1,5 +1,6 @@
 package com.driverwallet.app.feature.report.domain.usecase
 
+import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.feature.report.domain.model.CategorySummary
 import com.driverwallet.app.feature.report.domain.model.MonthlyReport
 import com.driverwallet.app.shared.data.repository.TransactionRepository
@@ -19,18 +20,23 @@ class GetMonthlyReportUseCase @Inject constructor(
 
         val transactions = transactionRepository.getByDateRange(startStr, endStr)
 
-        val totalIncome = transactions.filter { it.type == "income" }.sumOf { it.amount }
-        val totalExpense = transactions.filter { it.type == "expense" }.sumOf { it.amount }
+        val totalIncome = transactions
+            .filter { it.type == TransactionType.INCOME }
+            .sumOf { it.amount }
+        val totalExpense = transactions
+            .filter { it.type == TransactionType.EXPENSE }
+            .sumOf { it.amount }
 
         val incomeByCategory = transactions
-            .filter { it.type == "income" }
-            .groupBy { it.categoryId }
-            .map { (catId, txns) ->
+            .filter { it.type == TransactionType.INCOME }
+            .groupBy { it.category?.key ?: "unknown" }
+            .map { (catKey, txns) ->
                 val total = txns.sumOf { it.amount }
+                val firstCat = txns.first().category
                 CategorySummary(
-                    categoryId = catId,
-                    categoryName = txns.first().note.ifBlank { catId },
-                    categoryIcon = "",
+                    categoryId = catKey,
+                    categoryName = firstCat?.label ?: catKey,
+                    categoryIcon = firstCat?.iconName ?: "",
                     total = total,
                     percentage = if (totalIncome > 0) total.toFloat() / totalIncome else 0f,
                     transactionCount = txns.size,
@@ -39,14 +45,15 @@ class GetMonthlyReportUseCase @Inject constructor(
             .sortedByDescending { it.total }
 
         val expenseByCategory = transactions
-            .filter { it.type == "expense" }
-            .groupBy { it.categoryId }
-            .map { (catId, txns) ->
+            .filter { it.type == TransactionType.EXPENSE }
+            .groupBy { it.category?.key ?: "unknown" }
+            .map { (catKey, txns) ->
                 val total = txns.sumOf { it.amount }
+                val firstCat = txns.first().category
                 CategorySummary(
-                    categoryId = catId,
-                    categoryName = txns.first().note.ifBlank { catId },
-                    categoryIcon = "",
+                    categoryId = catKey,
+                    categoryName = firstCat?.label ?: catKey,
+                    categoryIcon = firstCat?.iconName ?: "",
                     total = total,
                     percentage = if (totalExpense > 0) total.toFloat() / totalExpense else 0f,
                     transactionCount = txns.size,

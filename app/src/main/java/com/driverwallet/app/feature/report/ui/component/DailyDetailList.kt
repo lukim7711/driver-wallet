@@ -19,7 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.driverwallet.app.core.ui.component.AmountText
+import com.driverwallet.app.core.ui.theme.ExpenseRed
+import com.driverwallet.app.core.ui.theme.IncomeGreen
 import com.driverwallet.app.core.util.CurrencyFormatter
 import com.driverwallet.app.feature.report.domain.model.DailySummary
 import java.time.format.TextStyle
@@ -45,6 +46,10 @@ private fun DailyDetailItem(
     day: DailySummary,
     modifier: Modifier = Modifier,
 ) {
+    val profit = day.profit
+    val profitPrefix = if (profit >= 0) "+Rp " else "-Rp "
+    val profitColor = if (profit >= 0) IncomeGreen else ExpenseRed
+
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
@@ -54,7 +59,6 @@ private fun DailyDetailItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Date circle
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -104,10 +108,11 @@ private fun DailyDetailItem(
                 )
             }
 
-            AmountText(
-                amount = day.profit,
+            Text(
+                text = "${profitPrefix}${CurrencyFormatter.format(kotlin.math.abs(profit))}",
                 style = MaterialTheme.typography.titleSmall,
-                showSign = true,
+                fontWeight = FontWeight.SemiBold,
+                color = profitColor,
             )
         }
     }

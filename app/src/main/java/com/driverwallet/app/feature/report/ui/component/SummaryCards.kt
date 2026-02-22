@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.component.AmountText
-import com.driverwallet.app.core.ui.theme.ExpenseColor
-import com.driverwallet.app.core.ui.theme.IncomeColor
+import com.driverwallet.app.core.ui.theme.ExpenseRed
+import com.driverwallet.app.core.ui.theme.IncomeGreen
 
 @Composable
 fun SummaryCards(
@@ -68,7 +68,7 @@ private fun SummaryCard(
             AmountText(
                 amount = amount,
                 style = MaterialTheme.typography.titleMedium,
-                color = if (isIncome) IncomeColor else ExpenseColor,
+                color = if (isIncome) IncomeGreen else ExpenseRed,
             )
         }
     }

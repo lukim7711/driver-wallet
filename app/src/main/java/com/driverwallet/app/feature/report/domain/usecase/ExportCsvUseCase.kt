@@ -3,6 +3,7 @@ package com.driverwallet.app.feature.report.domain.usecase
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
+import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.shared.data.repository.TransactionRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -27,9 +28,9 @@ class ExportCsvUseCase @Inject constructor(
             val csvContent = buildString {
                 appendLine("Tanggal,Tipe,Kategori,Jumlah,Catatan")
                 transactions.forEach { txn ->
-                    val date = txn.dateTime.substring(0, 10)
-                    val type = if (txn.type == "income") "Pemasukan" else "Pengeluaran"
-                    val category = sanitize(txn.categoryId)
+                    val date = txn.createdAt.substring(0, 10)
+                    val type = if (txn.type == TransactionType.INCOME) "Pemasukan" else "Pengeluaran"
+                    val category = sanitize(txn.category?.label ?: "Lainnya")
                     val amount = txn.amount.toString()
                     val note = sanitize(txn.note)
                     appendLine("$date,$type,$category,$amount,$note")

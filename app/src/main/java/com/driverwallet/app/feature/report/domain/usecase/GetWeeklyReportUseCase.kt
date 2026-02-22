@@ -1,5 +1,6 @@
 package com.driverwallet.app.feature.report.domain.usecase
 
+import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.feature.report.domain.model.DailySummary
 import com.driverwallet.app.feature.report.domain.model.WeeklyReport
 import com.driverwallet.app.shared.data.repository.TransactionRepository
@@ -20,9 +21,8 @@ class GetWeeklyReportUseCase @Inject constructor(
 
         val transactions = transactionRepository.getByDateRange(startStr, endStr)
 
-        // Group by date, ensure all 7 days present
         val grouped = transactions.groupBy {
-            LocalDate.parse(it.dateTime.substring(0, 10))
+            LocalDate.parse(it.createdAt.substring(0, 10))
         }
 
         val dailySummaries = (0L..6L).map { dayOffset ->
@@ -30,8 +30,12 @@ class GetWeeklyReportUseCase @Inject constructor(
             val dayTransactions = grouped[date].orEmpty()
             DailySummary(
                 date = date,
-                income = dayTransactions.filter { it.type == "income" }.sumOf { it.amount },
-                expense = dayTransactions.filter { it.type == "expense" }.sumOf { it.amount },
+                income = dayTransactions
+                    .filter { it.type == TransactionType.INCOME }
+                    .sumOf { it.amount },
+                expense = dayTransactions
+                    .filter { it.type == TransactionType.EXPENSE }
+                    .sumOf { it.amount },
                 transactionCount = dayTransactions.size,
             )
         }
