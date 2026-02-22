@@ -63,3 +63,35 @@ val FinanceOnSurfaceDark = Color(0xFFE1E3DD)
 val FinanceSurfaceVariantDark = Color(0xFF414941)
 val FinanceOnSurfaceVariantDark = Color(0xFFC0C9BF)
 val FinanceOutlineDark = Color(0xFF8B938A)
+
+// =========================================
+// Legacy Semantic Colors
+// Kept for backward compatibility with files
+// outside dashboard that still import these.
+// TODO: migrate remaining consumers to MaterialTheme tokens
+// =========================================
+@Deprecated("Use MaterialTheme.colorScheme.primary instead", ReplaceWith("MaterialTheme.colorScheme.primary"))
+val IncomeGreen = Color(0xFF2E7D32)
+
+@Deprecated("Use MaterialTheme.colorScheme.error instead", ReplaceWith("MaterialTheme.colorScheme.error"))
+val ExpenseRed = Color(0xFFC62828)
+
+@Deprecated("Use MaterialTheme.colorScheme.tertiary instead", ReplaceWith("MaterialTheme.colorScheme.tertiary"))
+val DebtOrange = Color(0xFFEF6C00)
+
+@Deprecated("Use MaterialTheme.colorScheme.secondary instead", ReplaceWith("MaterialTheme.colorScheme.secondary"))
+val BalanceBlue = Color(0xFF1565C0)
+
+// Legacy template colors (keep for any lingering references)
+@Deprecated("Use FinancePrimaryLight instead")
+val Purple40 = Color(0xFF6650A4)
+@Deprecated("Use FinanceSecondaryLight instead")
+val PurpleGrey40 = Color(0xFF625B71)
+@Deprecated("Use FinanceTertiaryLight instead")
+val Pink40 = Color(0xFF7D5260)
+@Deprecated("Use FinancePrimaryDark instead")
+val Purple80 = Color(0xFFD0BCFF)
+@Deprecated("Use FinanceSecondaryDark instead")
+val PurpleGrey80 = Color(0xFFCCC2DC)
+@Deprecated("Use FinanceTertiaryDark instead")
+val Pink80 = Color(0xFFEFB8C8)
