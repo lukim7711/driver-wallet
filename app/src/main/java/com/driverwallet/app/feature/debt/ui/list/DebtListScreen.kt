@@ -16,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.driverwallet.app.core.ui.component.EmptyState
 import com.driverwallet.app.core.ui.component.LoadingIndicator
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
+import com.driverwallet.app.core.ui.util.ObserveAsEvents
 import com.driverwallet.app.feature.debt.ui.list.component.DebtCardItem
 import com.driverwallet.app.feature.debt.ui.list.component.DebtHeroCard
 import com.driverwallet.app.feature.debt.ui.list.component.PaymentBottomSheet
@@ -34,23 +34,23 @@ import com.driverwallet.app.feature.debt.ui.list.component.PaymentBottomSheet
 fun DebtListScreen(
     onAddDebt: () -> Unit = {},
     viewModel: DebtListViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val paymentDialog by viewModel.paymentDialog.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
-        viewModel.uiEvent.collect { event ->
-            when (event) {
-                is GlobalUiEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
-                }
-                else -> Unit
+    ObserveAsEvents(viewModel.uiEvent) { event ->
+        when (event) {
+            is GlobalUiEvent.ShowSnackbar -> {
+                snackbarHostState.showSnackbar(event.message)
             }
+            else -> Unit
         }
     }
 
     Scaffold(
+        modifier = modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddDebt) {

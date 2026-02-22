@@ -9,11 +9,11 @@ import com.driverwallet.app.core.util.CurrencyFormatter
 import com.driverwallet.app.feature.input.domain.SaveTransactionUseCase
 import com.driverwallet.app.shared.domain.model.Transaction
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +30,8 @@ class QuickInputViewModel @Inject constructor(
     )
     val uiState: StateFlow<QuickInputUiState> = _uiState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _uiEvent = Channel<GlobalUiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private var amountString = ""
 
@@ -113,7 +113,7 @@ class QuickInputViewModel @Inject constructor(
                         TransactionType.INCOME -> "Pemasukan"
                         TransactionType.EXPENSE -> "Pengeluaran"
                     }
-                    _uiEvent.emit(
+                    _uiEvent.send(
                         GlobalUiEvent.ShowSnackbar(
                             "$typeLabel Rp ${CurrencyFormatter.format(current.amount)} tersimpan",
                         ),
@@ -121,7 +121,7 @@ class QuickInputViewModel @Inject constructor(
                     resetForm()
                 }
                 .onFailure { error ->
-                    _uiEvent.emit(
+                    _uiEvent.send(
                         GlobalUiEvent.ShowSnackbar(error.message ?: "Gagal menyimpan"),
                     )
                     _uiState.value = current.copy(isSaving = false)

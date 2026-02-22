@@ -3,6 +3,7 @@ package com.driverwallet.app.feature.dashboard.domain.usecase
 import com.driverwallet.app.core.model.todayJakarta
 import com.driverwallet.app.feature.dashboard.domain.model.DailyTarget
 import com.driverwallet.app.feature.debt.domain.DebtRepository
+import com.driverwallet.app.feature.settings.domain.SettingsKeys
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
@@ -17,7 +18,7 @@ class CalculateDailyTargetUseCase @Inject constructor(
         val today = todayJakarta()
 
         // Check rest day
-        val restDaysStr = settingsRepository.getSetting("rest_days") ?: "0"
+        val restDaysStr = settingsRepository.getSetting(SettingsKeys.REST_DAYS) ?: "0"
         val restDays = restDaysStr.split(",").mapNotNull { it.trim().toIntOrNull() }
         val todayDow = today.dayOfWeek.value % 7 // 0=Sun, 1=Mon, ..., 6=Sat
         val isRestDay = todayDow in restDays
@@ -28,7 +29,7 @@ class CalculateDailyTargetUseCase @Inject constructor(
 
         // Daily debt target
         val totalDebtRemaining = debtRepository.observeTotalRemaining().first()
-        val targetDateStr = settingsRepository.getSetting("debt_target_date")
+        val targetDateStr = settingsRepository.getSetting(SettingsKeys.DEBT_TARGET_DATE)
         val dailyDebtTarget = if (!targetDateStr.isNullOrEmpty()) {
             runCatching {
                 val targetDate = LocalDate.parse(targetDateStr)

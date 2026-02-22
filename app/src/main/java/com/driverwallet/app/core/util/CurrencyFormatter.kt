@@ -4,9 +4,11 @@ import java.text.NumberFormat
 import java.util.Locale
 
 object CurrencyFormatter {
-    private val formatter = NumberFormat.getNumberInstance(Locale("id", "ID"))
+    private val formatter = ThreadLocal.withInitial {
+        NumberFormat.getNumberInstance(Locale("id", "ID"))
+    }
 
-    fun format(amount: Long): String = formatter.format(amount)
+    fun format(amount: Long): String = formatter.get()!!.format(amount)
 
     fun formatWithPrefix(amount: Long): String = "Rp ${format(amount)}"
 
