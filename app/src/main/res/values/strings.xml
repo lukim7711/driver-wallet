@@ -1,11 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App -->
     <string name="app_name">Driver Wallet</string>
+
+    <!-- Navigation -->
     <string name="tab_beranda">Beranda</string>
     <string name="tab_input">Input</string>
     <string name="tab_hutang">Hutang</string>
     <string name="tab_laporan">Laporan</string>
-    <string name="tab_pengaturan">Pengaturan</string>
-    <string name="coming_soon">Coming Soon</string>
+    <string name="tab_pengaturan">Setelan</string>
     <string name="content_desc_navigate">Navigasi ke %1$s</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_profit_title">Keuntungan Hari Ini</string>
+    <string name="dashboard_daily_target">Target Harian</string>
+    <string name="dashboard_budget_remaining">Sisa Anggaran</string>
+    <string name="dashboard_due_alert_title">Jatuh Tempo</string>
+    <string name="dashboard_transactions_title">Transaksi Hari Ini</string>
+    <string name="dashboard_no_transactions">Belum ada transaksi hari ini</string>
+    <string name="dashboard_retry">Coba Lagi</string>
+    <string name="dashboard_error_default">Gagal memuat data</string>
+    <string name="content_desc_refresh">Muat ulang</string>
+    <string name="content_desc_due_alert">Peringatan jatuh tempo</string>
+
+    <!-- Quick Input -->
+    <string name="input_type_income">MASUK</string>
+    <string name="input_type_expense">KELUAR</string>
+    <string name="input_save">Simpan</string>
+    <string name="input_note_hint">Catatan (opsional)</string>
+    <string name="input_saved_success">%1$s Rp %2$s tersimpan</string>
+    <string name="input_saved_failure">Gagal menyimpan</string>
+    <string name="type_income">Pemasukan</string>
+    <string name="type_expense">Pengeluaran</string>
+
+    <!-- Debt -->
+    <string name="debt_total_remaining">Total Sisa Hutang</string>
+    <string name="debt_installment_info">Cicilan %1$d dari %2$d \u2022 %3$d%% Lunas</string>
+    <string name="debt_due_date">Jatuh tempo: %1$s</string>
+    <string name="debt_add">Tambah Hutang</string>
+    <string name="debt_pay">Bayar</string>
+    <string name="debt_delete">Hapus</string>
+    <string name="debt_empty">Belum ada hutang.\nTekan + untuk menambahkan.</string>
+    <string name="debt_pay_success">Cicilan Rp %1$s berhasil dibayar</string>
+    <string name="debt_pay_failure">Gagal membayar cicilan</string>
+    <string name="debt_delete_success">Hutang dihapus</string>
+    <string name="debt_delete_failure">Gagal menghapus</string>
+    <string name="debt_overdue">Terlambat</string>
+
+    <!-- Debt Form -->
+    <string name="debt_form_title">Tambah Hutang Baru</string>
+    <string name="debt_form_name">Nama Hutang</string>
+    <string name="debt_form_platform">Platform</string>
+    <string name="debt_form_total">Total Hutang</string>
+    <string name="debt_form_installments">Jumlah Cicilan</string>
+    <string name="debt_form_start_date">Tanggal Mulai</string>
+    <string name="debt_form_save">Simpan Hutang</string>
+
+    <!-- Report -->
+    <string name="report_weekly">Mingguan</string>
+    <string name="report_category">Kategori</string>
+    <string name="report_export_csv">Ekspor CSV</string>
+    <string name="report_export_success">CSV berhasil diekspor</string>
+    <string name="report_export_failure">Gagal mengekspor CSV</string>
+    <string name="report_no_data">Belum ada data untuk periode ini</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_dark_mode">Mode Gelap</string>
+    <string name="settings_target_date">Target Lunas Hutang</string>
+    <string name="settings_rest_days">Hari Libur</string>
+    <string name="settings_daily_budget">Anggaran Harian</string>
+    <string name="settings_about">Tentang Aplikasi</string>
+    <string name="settings_version">Versi %1$s</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Lewati</string>
+    <string name="onboarding_next">Lanjut</string>
+    <string name="onboarding_start">Mulai</string>
+
+    <!-- Common -->
+    <string name="common_category_other">Lainnya</string>
+    <string name="common_cancel">Batal</string>
+    <string name="common_confirm">Konfirmasi</string>
+    <string name="common_loading">Memuat…</string>
+    <string name="common_error">Terjadi kesalahan</string>
+
+    <!-- Validation -->
+    <string name="validation_amount_zero">Jumlah harus lebih dari 0</string>
+    <string name="validation_amount_max">Jumlah maksimal Rp 999.999.999</string>
+    <string name="validation_note_max">Catatan maksimal 100 karakter</string>
+    <string name="validation_category_required">Pilih kategori</string>
+    <string name="validation_pay_amount_zero">Jumlah bayar harus lebih dari 0</string>
+
+    <!-- CSV Header -->
+    <string name="csv_header">Tanggal,Tipe,Kategori,Jumlah,Catatan</string>
 </resources>

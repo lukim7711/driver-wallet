@@ -30,7 +30,7 @@ class DebtListViewModel @Inject constructor(
     private val _paymentDialog = MutableStateFlow<PaymentDialogState?>(null)
     val paymentDialog: StateFlow<PaymentDialogState?> = _paymentDialog.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>()
+    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>(extraBufferCapacity = 1)
     val uiEvent = _uiEvent.asSharedFlow()
 
     init {

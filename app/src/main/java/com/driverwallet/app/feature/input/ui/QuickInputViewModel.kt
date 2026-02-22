@@ -30,7 +30,7 @@ class QuickInputViewModel @Inject constructor(
     )
     val uiState: StateFlow<QuickInputUiState> = _uiState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>()
+    private val _uiEvent = MutableSharedFlow<GlobalUiEvent>(extraBufferCapacity = 1)
     val uiEvent = _uiEvent.asSharedFlow()
 
     private var amountString = ""
