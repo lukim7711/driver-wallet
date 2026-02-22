@@ -1,7 +1,7 @@
 package com.driverwallet.app.feature.settings.ui
 
-import com.driverwallet.app.feature.settings.data.entity.DailyExpenseEntity
-import com.driverwallet.app.feature.settings.data.entity.MonthlyExpenseEntity
+import com.driverwallet.app.feature.settings.domain.model.DailyExpense
+import com.driverwallet.app.feature.settings.domain.model.MonthlyExpense
 
 data class SettingsUiState(
     val isDarkMode: Boolean = false,
@@ -10,8 +10,8 @@ data class SettingsUiState(
     val budgetRokok: String = "",
     val budgetPulsa: String = "",
     val targetDate: String = "",
-    val monthlyExpenses: List<MonthlyExpenseEntity> = emptyList(),
-    val dailyExpenses: List<DailyExpenseEntity> = emptyList(),
+    val monthlyExpenses: List<MonthlyExpense> = emptyList(),
+    val dailyExpenses: List<DailyExpense> = emptyList(),
     val isSaving: Boolean = false,
     val showExpenseDialog: Boolean = false,
     val editingExpense: EditingExpense? = null,

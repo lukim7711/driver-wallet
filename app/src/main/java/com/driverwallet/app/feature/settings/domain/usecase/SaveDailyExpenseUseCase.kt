@@ -1,7 +1,7 @@
 package com.driverwallet.app.feature.settings.domain.usecase
 
-import com.driverwallet.app.feature.settings.data.entity.DailyExpenseEntity
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
+import com.driverwallet.app.feature.settings.domain.model.DailyExpense
 import javax.inject.Inject
 
 class SaveDailyExpenseUseCase @Inject constructor(
@@ -17,7 +17,7 @@ class SaveDailyExpenseUseCase @Inject constructor(
             require(name.isNotBlank()) { "Nama tidak boleh kosong" }
             require(amount > 0) { "Jumlah harus lebih dari 0" }
             settingsRepository.saveDailyExpense(
-                DailyExpenseEntity(id = id, name = name, icon = icon, amount = amount),
+                DailyExpense(id = id, name = name, icon = icon, amount = amount),
             )
         }
     }
