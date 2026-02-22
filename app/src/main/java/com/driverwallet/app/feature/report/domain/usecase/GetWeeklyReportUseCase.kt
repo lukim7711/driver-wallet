@@ -2,7 +2,7 @@ package com.driverwallet.app.feature.report.domain.usecase
 
 import com.driverwallet.app.feature.report.domain.model.DailySummary
 import com.driverwallet.app.feature.report.domain.model.WeeklyReport
-import com.driverwallet.app.feature.transaction.domain.TransactionRepository
+import com.driverwallet.app.shared.data.repository.TransactionRepository
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters

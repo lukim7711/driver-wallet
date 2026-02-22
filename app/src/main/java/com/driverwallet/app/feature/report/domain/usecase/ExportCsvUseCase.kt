@@ -3,7 +3,7 @@ package com.driverwallet.app.feature.report.domain.usecase
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.driverwallet.app.feature.transaction.domain.TransactionRepository
+import com.driverwallet.app.shared.data.repository.TransactionRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.time.LocalDate
