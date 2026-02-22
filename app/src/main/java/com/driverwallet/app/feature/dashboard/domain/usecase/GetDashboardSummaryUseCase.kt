@@ -7,6 +7,7 @@ import com.driverwallet.app.feature.dashboard.domain.model.DashboardData
 import com.driverwallet.app.feature.dashboard.domain.model.DueAlert
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
+import com.driverwallet.app.feature.settings.domain.model.RecurringFrequency
 import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -33,13 +34,16 @@ class GetDashboardSummaryUseCase @Inject constructor(
         val yesterdaySummary = transactionRepository.getTodaySummary(yesterdayPrefix)
         val yesterdayProfit = yesterdaySummary.profit
 
-        // 4. Budget info
-        val totalBudget = settingsRepository.getTotalDailyBudget()
-        val budgetCategories = listOf("fuel", "food", "cigarette", "phone")
-        val spentToday = transactionRepository.getBudgetSpentToday(todayPrefix, budgetCategories)
-        val budgetInfo = BudgetInfo(totalBudget = totalBudget, spentToday = spentToday)
+        // 4. Budget info — now powered by RecurringExpense(DAILY)
+        val totalDailyExpenses = settingsRepository.getTotalRecurringExpense(
+            RecurringFrequency.DAILY,
+        )
+        val budgetInfo = BudgetInfo(
+            totalBudget = totalDailyExpenses,
+            spentToday = todaySummary.expense,
+        )
 
-        // 5. Due alerts (next 7 days) — uses domain UpcomingDue
+        // 5. Due alerts (next 7 days)
         val maxDate = today.plusDays(7).toString()
         val upcomingDue = debtRepository.getUpcomingDue(maxDate)
         val dueAlerts = upcomingDue.map { due ->
@@ -56,7 +60,7 @@ class GetDashboardSummaryUseCase @Inject constructor(
             )
         }
 
-        // 6. Recent transactions (one-shot, no Flow overhead)
+        // 6. Recent transactions
         val recentTransactions = transactionRepository.getRecentTransactions(limit = 5)
 
         // 7. Daily target

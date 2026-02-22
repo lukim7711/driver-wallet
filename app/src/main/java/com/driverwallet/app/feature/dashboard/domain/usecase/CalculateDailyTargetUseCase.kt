@@ -5,6 +5,7 @@ import com.driverwallet.app.feature.dashboard.domain.model.DailyTarget
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.settings.domain.SettingsKeys
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
+import com.driverwallet.app.feature.settings.domain.model.RecurringFrequency
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -20,7 +21,7 @@ class CalculateDailyTargetUseCase @Inject constructor(
         // Check rest day
         val restDaysStr = settingsRepository.getSetting(SettingsKeys.REST_DAYS) ?: "0"
         val restDays = restDaysStr.split(",").mapNotNull { it.trim().toIntOrNull() }
-        val todayDow = today.dayOfWeek.value % 7 // 0=Sun, 1=Mon, ..., 6=Sat
+        val todayDow = today.dayOfWeek.value % 7
         val isRestDay = todayDow in restDays
 
         if (isRestDay) {
@@ -41,17 +42,14 @@ class CalculateDailyTargetUseCase @Inject constructor(
         }
 
         // Monthly expenses prorated to daily
-        val totalMonthly = settingsRepository.getTotalMonthlyExpense()
+        val totalMonthly = settingsRepository.getTotalRecurringExpense(RecurringFrequency.MONTHLY)
         val daysInMonth = today.lengthOfMonth().toLong().coerceAtLeast(1)
         val dailyProrated = totalMonthly / daysInMonth
 
-        // Daily fixed expenses
-        val dailyFixed = settingsRepository.getTotalDailyExpense()
+        // Daily fixed expenses (includes former budget items)
+        val dailyFixed = settingsRepository.getTotalRecurringExpense(RecurringFrequency.DAILY)
 
-        // Daily budget
-        val dailyBudget = settingsRepository.getTotalDailyBudget()
-
-        val targetAmount = dailyDebtTarget + dailyProrated + dailyFixed + dailyBudget
+        val targetAmount = dailyDebtTarget + dailyProrated + dailyFixed
 
         return DailyTarget(
             targetAmount = targetAmount,

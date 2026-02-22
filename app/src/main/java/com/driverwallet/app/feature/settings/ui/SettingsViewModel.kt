@@ -5,9 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
 import com.driverwallet.app.feature.settings.domain.SettingsKeys
 import com.driverwallet.app.feature.settings.domain.SettingsRepository
-import com.driverwallet.app.feature.settings.domain.usecase.SaveDailyBudgetsUseCase
-import com.driverwallet.app.feature.settings.domain.usecase.SaveDailyExpenseUseCase
-import com.driverwallet.app.feature.settings.domain.usecase.SaveMonthlyExpenseUseCase
+import com.driverwallet.app.feature.settings.domain.model.RecurringFrequency
+import com.driverwallet.app.feature.settings.domain.usecase.SaveRecurringExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val saveDailyBudgets: SaveDailyBudgetsUseCase,
-    private val saveMonthlyExpense: SaveMonthlyExpenseUseCase,
-    private val saveDailyExpense: SaveDailyExpenseUseCase,
+    private val saveRecurringExpense: SaveRecurringExpenseUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
@@ -35,9 +32,8 @@ class SettingsViewModel @Inject constructor(
     init {
         observeDarkMode()
         observeTargetDate()
-        observeBudgets()
-        observeMonthlyExpenses()
         observeDailyExpenses()
+        observeMonthlyExpenses()
     }
 
     private fun observeDarkMode() {
@@ -56,71 +52,56 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun observeBudgets() {
+    private fun observeDailyExpenses() {
         viewModelScope.launch {
-            settingsRepository.observeDailyBudgets().collect { budgets ->
-                val map = budgets.associate { it.category to it.amount.toString() }
-                _uiState.update {
-                    it.copy(
-                        budgetBbm = map["fuel"] ?: "0",
-                        budgetMakan = map["food"] ?: "0",
-                        budgetRokok = map["cigarette"] ?: "0",
-                        budgetPulsa = map["phone"] ?: "0",
-                    )
+            settingsRepository.observeRecurringExpenses(RecurringFrequency.DAILY)
+                .collect { expenses ->
+                    _uiState.update {
+                        it.copy(
+                            dailyExpenses = expenses.map { expense ->
+                                FixedExpenseDisplay(
+                                    id = expense.id,
+                                    name = expense.name,
+                                    icon = expense.icon,
+                                    amount = expense.amount,
+                                )
+                            },
+                        )
+                    }
                 }
-            }
         }
     }
 
     private fun observeMonthlyExpenses() {
         viewModelScope.launch {
-            settingsRepository.observeMonthlyExpenses().collect { expenses ->
-                _uiState.update {
-                    it.copy(
-                        monthlyExpenses = expenses.map { expense ->
-                            FixedExpenseDisplay(
-                                id = expense.id,
-                                name = expense.name,
-                                icon = expense.icon,
-                                amount = expense.amount,
-                            )
-                        },
-                    )
+            settingsRepository.observeRecurringExpenses(RecurringFrequency.MONTHLY)
+                .collect { expenses ->
+                    _uiState.update {
+                        it.copy(
+                            monthlyExpenses = expenses.map { expense ->
+                                FixedExpenseDisplay(
+                                    id = expense.id,
+                                    name = expense.name,
+                                    icon = expense.icon,
+                                    amount = expense.amount,
+                                )
+                            },
+                        )
+                    }
                 }
-            }
-        }
-    }
-
-    private fun observeDailyExpenses() {
-        viewModelScope.launch {
-            settingsRepository.observeDailyExpenses().collect { expenses ->
-                _uiState.update {
-                    it.copy(
-                        dailyExpenses = expenses.map { expense ->
-                            FixedExpenseDisplay(
-                                id = expense.id,
-                                name = expense.name,
-                                icon = expense.icon,
-                                amount = expense.amount,
-                            )
-                        },
-                    )
-                }
-            }
         }
     }
 
     fun onAction(action: SettingsUiAction) {
         when (action) {
             is SettingsUiAction.ToggleDarkMode -> toggleDarkMode(action.enabled)
-            is SettingsUiAction.UpdateBudget -> updateBudgetField(action.category, action.value)
             is SettingsUiAction.UpdateTargetDate -> _uiState.update { it.copy(targetDate = action.date) }
             is SettingsUiAction.SaveAll -> saveAll()
             is SettingsUiAction.ShowAddExpense -> showAddDialog(action.isMonthly)
             is SettingsUiAction.ShowEditExpense -> showEditDialog(action)
             is SettingsUiAction.DismissExpenseDialog -> dismissDialog()
             is SettingsUiAction.SaveExpense -> saveExpense(action.expense)
-            is SettingsUiAction.DeleteExpense -> deleteExpense(action.id, action.isMonthly)
+            is SettingsUiAction.DeleteExpense -> deleteExpense(action.id)
         }
     }
 
@@ -130,30 +111,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun updateBudgetField(category: String, value: String) {
-        _uiState.update {
-            when (category) {
-                "fuel" -> it.copy(budgetBbm = value)
-                "food" -> it.copy(budgetMakan = value)
-                "cigarette" -> it.copy(budgetRokok = value)
-                "phone" -> it.copy(budgetPulsa = value)
-                else -> it
-            }
-        }
-    }
-
     private fun saveAll() {
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true) }
             val state = _uiState.value
-
-            val budgets = mapOf(
-                "fuel" to (state.budgetBbm.toLongOrNull() ?: 0L),
-                "food" to (state.budgetMakan.toLongOrNull() ?: 0L),
-                "cigarette" to (state.budgetRokok.toLongOrNull() ?: 0L),
-                "phone" to (state.budgetPulsa.toLongOrNull() ?: 0L),
-            )
-            saveDailyBudgets(budgets)
 
             if (state.targetDate.isNotBlank()) {
                 settingsRepository.saveSetting(SettingsKeys.DEBT_TARGET_DATE, state.targetDate)
@@ -195,21 +156,15 @@ class SettingsViewModel @Inject constructor(
     private fun saveExpense(expense: EditingExpense) {
         viewModelScope.launch {
             val amount = expense.amount.toLongOrNull() ?: 0L
-            val result = if (expense.isMonthly) {
-                saveMonthlyExpense(
-                    id = expense.id,
-                    name = expense.name,
-                    amount = amount,
-                    icon = expense.icon,
-                )
-            } else {
-                saveDailyExpense(
-                    id = expense.id,
-                    name = expense.name,
-                    amount = amount,
-                    icon = expense.icon,
-                )
-            }
+            val frequency = if (expense.isMonthly) RecurringFrequency.MONTHLY
+                else RecurringFrequency.DAILY
+            val result = saveRecurringExpense(
+                id = expense.id,
+                name = expense.name,
+                amount = amount,
+                icon = expense.icon,
+                frequency = frequency,
+            )
             result
                 .onSuccess { dismissDialog() }
                 .onFailure { error ->
@@ -218,11 +173,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun deleteExpense(id: Long, isMonthly: Boolean) {
+    private fun deleteExpense(id: Long) {
         viewModelScope.launch {
             runCatching {
-                if (isMonthly) settingsRepository.deleteMonthlyExpense(id)
-                else settingsRepository.deleteDailyExpense(id)
+                settingsRepository.deleteRecurringExpense(id)
             }.onSuccess {
                 _uiEvent.send(GlobalUiEvent.ShowSnackbar("Berhasil dihapus"))
             }
