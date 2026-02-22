@@ -1,7 +1,7 @@
 package com.driverwallet.app.feature.debt.ui.list
 
-import com.driverwallet.app.feature.debt.data.entity.DebtScheduleEntity
 import com.driverwallet.app.feature.debt.domain.DebtWithScheduleInfo
+import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
 
 sealed interface DebtListUiState {
     data object Loading : DebtListUiState
@@ -16,7 +16,7 @@ sealed interface DebtListUiState {
 }
 
 sealed interface DebtListUiAction {
-    data class OpenPayment(val debtId: String, val schedule: DebtScheduleEntity) : DebtListUiAction
+    data class OpenPayment(val debtId: String, val schedule: DebtSchedule) : DebtListUiAction
     data object DismissPayment : DebtListUiAction
     data class ConfirmPayment(val debtId: String, val scheduleId: String, val amount: Long) : DebtListUiAction
     data class DeleteDebt(val debtId: String) : DebtListUiAction

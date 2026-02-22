@@ -26,6 +26,7 @@ import com.driverwallet.app.core.ui.component.EmptyState
 import com.driverwallet.app.core.ui.component.LoadingIndicator
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
 import com.driverwallet.app.core.ui.util.ObserveAsEvents
+import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
 import com.driverwallet.app.feature.debt.ui.list.component.DebtCardItem
 import com.driverwallet.app.feature.debt.ui.list.component.DebtHeroCard
 import com.driverwallet.app.feature.debt.ui.list.component.PaymentBottomSheet
@@ -105,7 +106,7 @@ fun DebtListScreen(
 @Composable
 private fun DebtListContent(
     state: DebtListUiState.Success,
-    onPayClick: (String, com.driverwallet.app.feature.debt.data.entity.DebtScheduleEntity) -> Unit,
+    onPayClick: (String, DebtSchedule) -> Unit,
     onDeleteClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {

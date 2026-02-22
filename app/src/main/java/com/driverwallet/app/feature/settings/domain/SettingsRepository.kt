@@ -1,26 +1,26 @@
 package com.driverwallet.app.feature.settings.domain
 
-import com.driverwallet.app.feature.settings.data.entity.DailyBudgetEntity
-import com.driverwallet.app.feature.settings.data.entity.DailyExpenseEntity
-import com.driverwallet.app.feature.settings.data.entity.MonthlyExpenseEntity
+import com.driverwallet.app.feature.settings.domain.model.DailyBudget
+import com.driverwallet.app.feature.settings.domain.model.DailyExpense
+import com.driverwallet.app.feature.settings.domain.model.MonthlyExpense
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
     // Daily Budgets
-    fun observeDailyBudgets(): Flow<List<DailyBudgetEntity>>
-    suspend fun getDailyBudgets(): List<DailyBudgetEntity>
-    suspend fun saveBudgets(budgets: List<DailyBudgetEntity>)
+    fun observeDailyBudgets(): Flow<List<DailyBudget>>
+    suspend fun getDailyBudgets(): List<DailyBudget>
+    suspend fun saveBudgets(budgets: List<DailyBudget>)
     suspend fun getTotalDailyBudget(): Long
 
     // Monthly Expenses
-    fun observeMonthlyExpenses(): Flow<List<MonthlyExpenseEntity>>
-    suspend fun saveMonthlyExpense(expense: MonthlyExpenseEntity)
+    fun observeMonthlyExpenses(): Flow<List<MonthlyExpense>>
+    suspend fun saveMonthlyExpense(expense: MonthlyExpense)
     suspend fun deleteMonthlyExpense(id: Long)
     suspend fun getTotalMonthlyExpense(): Long
 
     // Daily Expenses
-    fun observeDailyExpenses(): Flow<List<DailyExpenseEntity>>
-    suspend fun saveDailyExpense(expense: DailyExpenseEntity)
+    fun observeDailyExpenses(): Flow<List<DailyExpense>>
+    suspend fun saveDailyExpense(expense: DailyExpense)
     suspend fun deleteDailyExpense(id: Long)
     suspend fun getTotalDailyExpense(): Long
 

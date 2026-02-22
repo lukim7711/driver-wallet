@@ -7,11 +7,13 @@ import com.driverwallet.app.core.model.nowJakarta
 import com.driverwallet.app.core.util.UuidGenerator
 import com.driverwallet.app.feature.debt.data.dao.DebtDao
 import com.driverwallet.app.feature.debt.data.dao.DebtScheduleDao
-import com.driverwallet.app.feature.debt.data.dao.UpcomingDueTuple
-import com.driverwallet.app.feature.debt.data.entity.DebtEntity
-import com.driverwallet.app.feature.debt.data.entity.DebtScheduleEntity
+import com.driverwallet.app.feature.debt.data.mapper.toDomain
+import com.driverwallet.app.feature.debt.data.mapper.toEntity
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.debt.domain.DebtWithScheduleInfo
+import com.driverwallet.app.feature.debt.domain.model.Debt
+import com.driverwallet.app.feature.debt.domain.model.DebtSchedule
+import com.driverwallet.app.feature.debt.domain.model.UpcomingDue
 import com.driverwallet.app.shared.data.dao.TransactionDao
 import com.driverwallet.app.shared.data.entity.TransactionEntity
 import kotlinx.coroutines.flow.Flow
@@ -28,12 +30,12 @@ class DebtRepositoryImpl @Inject constructor(
 
     override fun observeActiveDebtsWithSchedule(): Flow<List<DebtWithScheduleInfo>> =
         debtDao.observeActiveDebts().map { debts ->
-            debts.map { debt ->
+            debts.map { debtEntity ->
                 DebtWithScheduleInfo(
-                    debt = debt,
-                    nextSchedule = debtScheduleDao.getNextUnpaid(debt.id),
-                    paidCount = debtScheduleDao.countPaid(debt.id),
-                    totalCount = debt.installmentCount,
+                    debt = debtEntity.toDomain(),
+                    nextSchedule = debtScheduleDao.getNextUnpaid(debtEntity.id)?.toDomain(),
+                    paidCount = debtScheduleDao.countPaid(debtEntity.id),
+                    totalCount = debtEntity.installmentCount,
                 )
             }
         }
@@ -41,13 +43,13 @@ class DebtRepositoryImpl @Inject constructor(
     override fun observeTotalRemaining(): Flow<Long> =
         debtDao.observeTotalRemaining()
 
-    override suspend fun getById(id: String): DebtEntity? =
-        debtDao.getById(id)
+    override suspend fun getById(id: String): Debt? =
+        debtDao.getById(id)?.toDomain()
 
-    override suspend fun saveDebt(debt: DebtEntity, schedules: List<DebtScheduleEntity>) {
+    override suspend fun saveDebt(debt: Debt, schedules: List<DebtSchedule>) {
         database.withTransaction {
-            debtDao.insert(debt)
-            debtScheduleDao.insertAll(schedules)
+            debtDao.insert(debt.toEntity())
+            debtScheduleDao.insertAll(schedules.map { it.toEntity() })
         }
     }
 
@@ -100,8 +102,8 @@ class DebtRepositoryImpl @Inject constructor(
         debtDao.softDelete(debtId, now)
     }
 
-    override suspend fun getUpcomingDue(maxDate: String): List<UpcomingDueTuple> =
-        debtScheduleDao.getUpcomingDue(maxDate)
+    override suspend fun getUpcomingDue(maxDate: String): List<UpcomingDue> =
+        debtScheduleDao.getUpcomingDue(maxDate).map { it.toDomain() }
 
     override suspend fun markOverdueSchedules(today: String) {
         val now = nowJakarta().format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
