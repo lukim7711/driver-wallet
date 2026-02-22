@@ -9,16 +9,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.driverwallet.app.feature.dashboard.ui.DashboardScreen
+import com.driverwallet.app.feature.debt.ui.form.DebtFormScreen
+import com.driverwallet.app.feature.debt.ui.list.DebtListScreen
 import com.driverwallet.app.feature.input.ui.QuickInputScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    var showDebtForm by rememberSaveable { mutableStateOf(false) }
+
+    if (showDebtForm) {
+        DebtFormScreen(onBack = { showDebtForm = false })
+        return
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -37,7 +46,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             when (selectedTab) {
                 0 -> DashboardScreen()
                 1 -> QuickInputScreen()
-                2 -> PlaceholderScreen("Hutang")
+                2 -> DebtListScreen(onAddDebt = { showDebtForm = true })
                 3 -> PlaceholderScreen("Laporan")
                 4 -> PlaceholderScreen("Setelan")
             }
