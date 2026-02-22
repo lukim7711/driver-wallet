@@ -3,13 +3,18 @@ package com.driverwallet.app.feature.input.ui
 import app.cash.turbine.test
 import com.driverwallet.app.core.model.Categories
 import com.driverwallet.app.core.model.TransactionType
-import com.driverwallet.app.core.test.MainDispatcherExtension
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
 import com.driverwallet.app.feature.input.domain.SaveTransactionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
@@ -18,18 +23,24 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(MainDispatcherExtension::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class QuickInputViewModelTest {
 
+    private val testDispatcher = UnconfinedTestDispatcher()
     private val saveUseCase: SaveTransactionUseCase = mockk()
     private lateinit var vm: QuickInputViewModel
 
     @BeforeEach
     fun setup() {
+        Dispatchers.setMain(testDispatcher)
         coEvery { saveUseCase(any()) } returns Result.success(Unit)
         vm = QuickInputViewModel(saveUseCase)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     private val readyState get() = vm.uiState.value as QuickInputUiState.Ready
@@ -131,7 +142,7 @@ class QuickInputViewModelTest {
     inner class Save {
 
         @Test
-        fun `success emits snackbar and resets form`() = runTest {
+        fun `success emits snackbar and resets form`() = runTest(testDispatcher) {
             vm.onAction(QuickInputUiAction.AppendDigit("5"))
             vm.onAction(QuickInputUiAction.SelectCategory(Categories.FUEL))
 
@@ -148,7 +159,7 @@ class QuickInputViewModelTest {
         }
 
         @Test
-        fun `failure emits error snackbar`() = runTest {
+        fun `failure emits error snackbar`() = runTest(testDispatcher) {
             coEvery { saveUseCase(any()) } returns Result.failure(Exception("DB error"))
             vm.onAction(QuickInputUiAction.AppendDigit("5"))
             vm.onAction(QuickInputUiAction.SelectCategory(Categories.FUEL))

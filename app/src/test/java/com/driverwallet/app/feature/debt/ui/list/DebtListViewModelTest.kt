@@ -1,7 +1,6 @@
 package com.driverwallet.app.feature.debt.ui.list
 
 import app.cash.turbine.test
-import com.driverwallet.app.core.test.MainDispatcherExtension
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
 import com.driverwallet.app.feature.debt.domain.DebtRepository
 import com.driverwallet.app.feature.debt.domain.usecase.GetActiveDebtsUseCase
@@ -12,29 +11,46 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(MainDispatcherExtension::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class DebtListViewModelTest {
 
+    private val testDispatcher = UnconfinedTestDispatcher()
     private val getActiveDebts: GetActiveDebtsUseCase = mockk()
     private val payInstallment: PayDebtInstallmentUseCase = mockk()
     private val debtRepository: DebtRepository = mockk()
+
+    @BeforeEach
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     @Nested
     @DisplayName("Observe debts")
     inner class ObserveDebts {
 
         @Test
-        fun `empty debts results in Empty state`() = runTest {
+        fun `empty debts results in Empty state`() = runTest(testDispatcher) {
             every { getActiveDebts() } returns flowOf(emptyList())
 
             val vm = DebtListViewModel(getActiveDebts, payInstallment, debtRepository)
@@ -48,7 +64,7 @@ class DebtListViewModelTest {
     inner class Payment {
 
         @Test
-        fun `confirm payment success dismisses dialog and shows snackbar`() = runTest {
+        fun `confirm payment success dismisses dialog and shows snackbar`() = runTest(testDispatcher) {
             every { getActiveDebts() } returns flowOf(emptyList())
             coEvery { payInstallment(any(), any(), any()) } returns Result.success(Unit)
 
@@ -69,7 +85,7 @@ class DebtListViewModelTest {
         }
 
         @Test
-        fun `confirm payment failure shows error snackbar`() = runTest {
+        fun `confirm payment failure shows error snackbar`() = runTest(testDispatcher) {
             every { getActiveDebts() } returns flowOf(emptyList())
             coEvery { payInstallment(any(), any(), any()) } returns Result.failure(
                 Exception("Saldo kurang"),
@@ -96,7 +112,7 @@ class DebtListViewModelTest {
     inner class Delete {
 
         @Test
-        fun `delete debt calls softDelete and shows snackbar`() = runTest {
+        fun `delete debt calls softDelete and shows snackbar`() = runTest(testDispatcher) {
             every { getActiveDebts() } returns flowOf(emptyList())
             coEvery { debtRepository.softDelete(any()) } just runs
 
@@ -111,7 +127,7 @@ class DebtListViewModelTest {
         }
 
         @Test
-        fun `delete failure shows error snackbar`() = runTest {
+        fun `delete failure shows error snackbar`() = runTest(testDispatcher) {
             every { getActiveDebts() } returns flowOf(emptyList())
             coEvery { debtRepository.softDelete(any()) } throws RuntimeException("DB locked")
 
