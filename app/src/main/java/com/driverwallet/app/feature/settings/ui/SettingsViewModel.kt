@@ -50,7 +50,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun observeTargetDate() {
         viewModelScope.launch {
-            settingsRepository.observeSetting(SettingsKeys.TARGET_DATE).collect { value ->
+            settingsRepository.observeSetting(SettingsKeys.DEBT_TARGET_DATE).collect { value ->
                 _uiState.update { it.copy(targetDate = value ?: "") }
             }
         }
@@ -134,7 +134,7 @@ class SettingsViewModel @Inject constructor(
             saveDailyBudgets(budgets)
 
             if (state.targetDate.isNotBlank()) {
-                settingsRepository.saveSetting(SettingsKeys.TARGET_DATE, state.targetDate)
+                settingsRepository.saveSetting(SettingsKeys.DEBT_TARGET_DATE, state.targetDate)
             }
 
             _uiState.update { it.copy(isSaving = false) }
