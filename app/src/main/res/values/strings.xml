@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Driver Wallet</string>
+    <string name="tab_beranda">Beranda</string>
+    <string name="tab_input">Input</string>
+    <string name="tab_hutang">Hutang</string>
+    <string name="tab_laporan">Laporan</string>
+    <string name="tab_pengaturan">Pengaturan</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="content_desc_navigate">Navigasi ke %1$s</string>
+</resources>
