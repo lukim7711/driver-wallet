@@ -1,6 +1,7 @@
 package com.driverwallet.app.feature.report.domain.model
 
 import androidx.compose.runtime.Immutable
+import com.driverwallet.app.shared.domain.model.DailySummary
 
 @Immutable
 data class CustomReport(

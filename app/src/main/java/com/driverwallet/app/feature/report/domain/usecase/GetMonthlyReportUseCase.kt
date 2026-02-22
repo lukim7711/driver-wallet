@@ -1,7 +1,5 @@
 package com.driverwallet.app.feature.report.domain.usecase
 
-import com.driverwallet.app.core.model.TransactionType
-import com.driverwallet.app.feature.report.domain.model.CategorySummary
 import com.driverwallet.app.feature.report.domain.model.MonthlyReport
 import com.driverwallet.app.shared.domain.repository.TransactionRepository
 import java.time.YearMonth
@@ -18,30 +16,12 @@ class GetMonthlyReportUseCase @Inject constructor(
         val startStr = "${firstDay}T00:00:00"
         val endStr = "${lastDay}T23:59:59"
 
-        val transactions = transactionRepository.getByDateRange(startStr, endStr)
+        // Two lightweight SQL queries instead of loading all transactions
+        val dailySummaries = transactionRepository.getDailySummary(startStr, endStr)
+        val totalIncome = dailySummaries.sumOf { it.income }
+        val totalExpense = dailySummaries.sumOf { it.expense }
 
-        val totalIncome = transactions
-            .filter { it.type == TransactionType.INCOME }
-            .sumOf { it.amount }
-        val totalExpense = transactions
-            .filter { it.type == TransactionType.EXPENSE }
-            .sumOf { it.amount }
-
-        val totalAll = totalIncome + totalExpense
-        val categoryBreakdown = transactions
-            .groupBy { it.category?.key ?: "unknown" }
-            .map { (catKey, txns) ->
-                val total = txns.sumOf { it.amount }
-                val firstCat = txns.first().category
-                CategorySummary(
-                    categoryKey = catKey,
-                    categoryLabel = firstCat?.label ?: catKey,
-                    total = total,
-                    count = txns.size,
-                    percentage = if (totalAll > 0) total.toFloat() / totalAll else 0f,
-                )
-            }
-            .sortedByDescending { it.total }
+        val categoryBreakdown = transactionRepository.getCategorySummary(startStr, endStr)
 
         return MonthlyReport(
             month = yearMonth.toString(),
