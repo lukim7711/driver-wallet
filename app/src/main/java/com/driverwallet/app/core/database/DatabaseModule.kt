@@ -39,7 +39,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "driver_wallet.db",
         )
-            .addMigration(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2)
             .addCallback(DatabaseCallback())
             .build()
 
