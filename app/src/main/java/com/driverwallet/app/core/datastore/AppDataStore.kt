@@ -16,26 +16,22 @@ private val Context.dataStore by preferencesDataStore(name = "driver_wallet_pref
 class AppDataStore @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
-    companion object {
+    private object Keys {
         val HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
     }
 
-    val hasSeenOnboarding: Flow<Boolean> = context.dataStore.data
-        .map { prefs -> prefs[HAS_SEEN_ONBOARDING] ?: false }
+    val hasSeenOnboarding: Flow<Boolean> =
+        context.dataStore.data.map { it[Keys.HAS_SEEN_ONBOARDING] ?: false }
 
-    suspend fun setOnboardingSeen() {
-        context.dataStore.edit { prefs ->
-            prefs[HAS_SEEN_ONBOARDING] = true
-        }
+    suspend fun setHasSeenOnboarding(value: Boolean) {
+        context.dataStore.edit { it[Keys.HAS_SEEN_ONBOARDING] = value }
     }
 
-    val isDarkMode: Flow<Boolean> = context.dataStore.data
-        .map { prefs -> prefs[DARK_MODE] ?: false }
+    val darkMode: Flow<Boolean> =
+        context.dataStore.data.map { it[Keys.DARK_MODE] ?: false }
 
-    suspend fun setDarkMode(enabled: Boolean) {
-        context.dataStore.edit { prefs ->
-            prefs[DARK_MODE] = enabled
-        }
+    suspend fun setDarkMode(value: Boolean) {
+        context.dataStore.edit { it[Keys.DARK_MODE] = value }
     }
 }

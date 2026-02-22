@@ -15,13 +15,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(
-        @ApplicationContext context: Context,
-    ): AppDatabase = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        "driver_wallet.db",
-    ).build()
-
-    // DAO providers will be added in Phase 1 (Issue #3)
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
+        Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "driver_wallet.db",
+        ).build()
 }

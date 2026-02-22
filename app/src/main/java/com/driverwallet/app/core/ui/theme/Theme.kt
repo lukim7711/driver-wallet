@@ -10,56 +10,16 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val LightColorScheme = lightColorScheme(
-    primary = PurplePrimary,
-    onPrimary = PurpleOnPrimary,
-    primaryContainer = PurplePrimaryContainer,
-    onPrimaryContainer = PurpleOnPrimaryContainer,
-    secondary = PurpleSecondary,
-    onSecondary = PurpleOnSecondary,
-    secondaryContainer = PurpleSecondaryContainer,
-    onSecondaryContainer = PurpleOnSecondaryContainer,
-    tertiary = PurpleTertiary,
-    onTertiary = PurpleOnTertiary,
-    tertiaryContainer = PurpleTertiaryContainer,
-    onTertiaryContainer = PurpleOnTertiaryContainer,
-    error = ErrorRed,
-    onError = ErrorOnError,
-    errorContainer = ErrorContainer,
-    onErrorContainer = ErrorOnErrorContainer,
-    background = LightBackground,
-    onBackground = LightOnBackground,
-    surface = LightSurface,
-    onSurface = LightOnSurface,
-    surfaceVariant = LightSurfaceVariant,
-    onSurfaceVariant = LightOnSurfaceVariant,
-    outline = LightOutline,
+private val DarkColorScheme = darkColorScheme(
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80,
 )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = PurplePrimaryContainer,
-    onPrimary = PurpleOnPrimaryContainer,
-    primaryContainer = PurplePrimary,
-    onPrimaryContainer = PurpleOnPrimary,
-    secondary = PurpleSecondaryContainer,
-    onSecondary = PurpleOnSecondaryContainer,
-    secondaryContainer = PurpleSecondary,
-    onSecondaryContainer = PurpleOnSecondary,
-    tertiary = PurpleTertiaryContainer,
-    onTertiary = PurpleOnTertiaryContainer,
-    tertiaryContainer = PurpleTertiary,
-    onTertiaryContainer = PurpleOnTertiary,
-    error = ErrorContainer,
-    onError = ErrorOnErrorContainer,
-    errorContainer = ErrorRed,
-    onErrorContainer = ErrorOnError,
-    background = DarkBackground,
-    onBackground = DarkOnBackground,
-    surface = DarkSurface,
-    onSurface = DarkOnSurface,
-    surfaceVariant = DarkSurfaceVariant,
-    onSurfaceVariant = DarkOnSurfaceVariant,
-    outline = DarkOutline,
+private val LightColorScheme = lightColorScheme(
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40,
 )
 
 @Composable
@@ -71,8 +31,7 @@ fun DriverWalletTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context)
-            else dynamicLightColorScheme(context)
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
@@ -80,8 +39,8 @@ fun DriverWalletTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = DriverWalletTypography,
-        shapes = DriverWalletShapes,
+        typography = AppTypography,
+        shapes = AppShapes,
         content = content,
     )
 }

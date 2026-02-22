@@ -4,14 +4,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-/**
- * Room database shell for Driver Wallet.
- * Entities and DAOs will be registered in Phase 1 (Issue #3).
- */
 @Database(
-    entities = [],
+    entities = [PlaceholderEntity::class],
     version = 1,
-    exportSchema = true,
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase()

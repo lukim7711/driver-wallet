@@ -4,17 +4,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
-val DriverWalletShapes = Shapes(
-    small = RoundedCornerShape(4.dp),
+val AppShapes = Shapes(
+    small = RoundedCornerShape(8.dp),
     medium = RoundedCornerShape(16.dp),
-    large = RoundedCornerShape(28.dp),
+    large = RoundedCornerShape(24.dp),
+    extraLarge = RoundedCornerShape(28.dp),
 )
 
-object AppShapes {
+object AppShapeTokens {
     val HeroCard = RoundedCornerShape(28.dp)
-    val StandardCard = RoundedCornerShape(16.dp)
     val DebtCard = RoundedCornerShape(24.dp)
-    val CategoryIcon = RoundedCornerShape(20.dp)
-    val Pill = RoundedCornerShape(percent = 50)
-    val FilledTextField = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
+    val Pill = RoundedCornerShape(50)
+    val BottomSheet = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
 }
