@@ -31,6 +31,7 @@ data class TransactionEntity(
     val category: String,
     val amount: Long,
     val note: String = "",
+    @ColumnInfo(name = "source", defaultValue = "manual") val source: String = "manual",
     @ColumnInfo(name = "debt_id") val debtId: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String,
     @ColumnInfo(name = "updated_at") val updatedAt: String,

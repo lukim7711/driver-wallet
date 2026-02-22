@@ -1,6 +1,7 @@
 package com.driverwallet.app.shared.domain.model
 
 import com.driverwallet.app.core.model.Category
+import com.driverwallet.app.core.model.TransactionSource
 import com.driverwallet.app.core.model.TransactionType
 
 /**
@@ -13,6 +14,7 @@ data class Transaction(
     val category: Category? = null,
     val amount: Long = 0L,
     val note: String = "",
+    val source: TransactionSource = TransactionSource.MANUAL,
     val debtId: String? = null,
     val createdAt: String = "",
 )

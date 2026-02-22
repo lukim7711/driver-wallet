@@ -14,12 +14,15 @@ data class Debt(
     val installmentCount: Int,
     val dueDay: Int,
     val interestRate: Double = 0.0,
-    val penaltyType: String = "none",
+    val penaltyType: PenaltyType = PenaltyType.NONE,
     val penaltyRate: Double = 0.0,
-    val debtType: String = "installment",
+    val debtType: DebtType = DebtType.INSTALLMENT,
     val note: String = "",
-    val status: String = "active",
+    val status: DebtStatus = DebtStatus.ACTIVE,
     val startDate: String,
     val createdAt: String,
     val updatedAt: String,
-)
+) {
+    val isCompleted: Boolean get() = status == DebtStatus.COMPLETED
+    val isActive: Boolean get() = status == DebtStatus.ACTIVE
+}
