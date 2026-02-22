@@ -26,7 +26,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.driverwallet.app.core.ui.navigation.GlobalUiEvent
 import com.driverwallet.app.core.ui.util.ObserveAsEvents
-import com.driverwallet.app.feature.settings.ui.component.BudgetSection
 import com.driverwallet.app.feature.settings.ui.component.DarkModeToggle
 import com.driverwallet.app.feature.settings.ui.component.ExpenseFormDialog
 import com.driverwallet.app.feature.settings.ui.component.FixedExpenseSection
@@ -78,20 +77,6 @@ fun SettingsScreen(
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             }
 
-            // Budget Section
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                BudgetSection(
-                    budgetBbm = uiState.budgetBbm,
-                    budgetMakan = uiState.budgetMakan,
-                    budgetRokok = uiState.budgetRokok,
-                    budgetPulsa = uiState.budgetPulsa,
-                    onBudgetChange = { category, value ->
-                        viewModel.onAction(SettingsUiAction.UpdateBudget(category, value))
-                    },
-                )
-            }
-
             // Target Date
             item {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -101,34 +86,10 @@ fun SettingsScreen(
                 )
             }
 
-            // Monthly Expenses — mapped in ViewModel, no allocation here
+            // Daily Expenses (includes former budget items: BBM, Makan, etc.)
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                Spacer(modifier = Modifier.height(8.dp))
-                FixedExpenseSection(
-                    title = "Pengeluaran Tetap Bulanan",
-                    expenses = uiState.monthlyExpenses,
-                    onAdd = { viewModel.onAction(SettingsUiAction.ShowAddExpense(isMonthly = true)) },
-                    onEdit = { expense ->
-                        viewModel.onAction(
-                            SettingsUiAction.ShowEditExpense(
-                                id = expense.id,
-                                name = expense.name,
-                                amount = expense.amount,
-                                icon = expense.icon,
-                                isMonthly = true,
-                            ),
-                        )
-                    },
-                    onDelete = { id ->
-                        viewModel.onAction(SettingsUiAction.DeleteExpense(id, isMonthly = true))
-                    },
-                )
-            }
-
-            // Daily Expenses — mapped in ViewModel, no allocation here
-            item {
                 Spacer(modifier = Modifier.height(8.dp))
                 FixedExpenseSection(
                     title = "Pengeluaran Tetap Harian",
@@ -146,7 +107,31 @@ fun SettingsScreen(
                         )
                     },
                     onDelete = { id ->
-                        viewModel.onAction(SettingsUiAction.DeleteExpense(id, isMonthly = false))
+                        viewModel.onAction(SettingsUiAction.DeleteExpense(id))
+                    },
+                )
+            }
+
+            // Monthly Expenses
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                FixedExpenseSection(
+                    title = "Pengeluaran Tetap Bulanan",
+                    expenses = uiState.monthlyExpenses,
+                    onAdd = { viewModel.onAction(SettingsUiAction.ShowAddExpense(isMonthly = true)) },
+                    onEdit = { expense ->
+                        viewModel.onAction(
+                            SettingsUiAction.ShowEditExpense(
+                                id = expense.id,
+                                name = expense.name,
+                                amount = expense.amount,
+                                icon = expense.icon,
+                                isMonthly = true,
+                            ),
+                        )
+                    },
+                    onDelete = { id ->
+                        viewModel.onAction(SettingsUiAction.DeleteExpense(id))
                     },
                 )
             }

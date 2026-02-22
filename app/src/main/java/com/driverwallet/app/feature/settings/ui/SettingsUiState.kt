@@ -12,10 +12,6 @@ data class FixedExpenseDisplay(
 
 data class SettingsUiState(
     val isDarkMode: Boolean = false,
-    val budgetBbm: String = "",
-    val budgetMakan: String = "",
-    val budgetRokok: String = "",
-    val budgetPulsa: String = "",
     val targetDate: String = "",
     val monthlyExpenses: List<FixedExpenseDisplay> = emptyList(),
     val dailyExpenses: List<FixedExpenseDisplay> = emptyList(),
@@ -34,7 +30,6 @@ data class EditingExpense(
 
 sealed interface SettingsUiAction {
     data class ToggleDarkMode(val enabled: Boolean) : SettingsUiAction
-    data class UpdateBudget(val category: String, val value: String) : SettingsUiAction
     data class UpdateTargetDate(val date: String) : SettingsUiAction
     data object SaveAll : SettingsUiAction
     data class ShowAddExpense(val isMonthly: Boolean) : SettingsUiAction
@@ -47,5 +42,5 @@ sealed interface SettingsUiAction {
     ) : SettingsUiAction
     data object DismissExpenseDialog : SettingsUiAction
     data class SaveExpense(val expense: EditingExpense) : SettingsUiAction
-    data class DeleteExpense(val id: Long, val isMonthly: Boolean) : SettingsUiAction
+    data class DeleteExpense(val id: Long) : SettingsUiAction
 }
