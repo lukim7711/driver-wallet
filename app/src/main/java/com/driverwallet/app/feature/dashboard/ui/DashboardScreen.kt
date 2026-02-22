@@ -59,30 +59,30 @@ private fun DashboardContent(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        item {
+        item(key = "hero") {
             ProfitHeroCard(
                 profit = state.todaySummary.profit,
                 percentChange = state.percentChange,
             )
         }
-        item {
+        item(key = "income_expense") {
             IncomeExpenseRow(
                 income = state.todaySummary.income,
                 expense = state.todaySummary.expense,
             )
         }
-        item {
+        item(key = "daily_target") {
             DailyTargetSection(dailyTarget = state.dailyTarget)
         }
-        item {
+        item(key = "budget") {
             BudgetRemainingCard(budgetInfo = state.budgetInfo)
         }
         if (state.dueAlerts.isNotEmpty()) {
-            item {
+            item(key = "due_alerts") {
                 DueAlertCard(alerts = state.dueAlerts)
             }
         }
-        item {
+        item(key = "transactions") {
             TodayTransactionList(transactions = state.recentTransactions)
         }
     }
@@ -106,7 +106,7 @@ private fun ErrorContent(
             )
             Spacer(modifier = Modifier.height(8.dp))
             TextButton(onClick = onRetry) {
-                Icon(Icons.Outlined.Refresh, contentDescription = null)
+                Icon(Icons.Outlined.Refresh, contentDescription = "Muat ulang")
                 Text(" Coba Lagi")
             }
         }

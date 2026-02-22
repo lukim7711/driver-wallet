@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.component.AmountText
 import com.driverwallet.app.core.ui.component.HeroCard
@@ -26,7 +26,9 @@ fun ProfitHeroCard(
     percentChange: Float?,
     modifier: Modifier = Modifier,
 ) {
-    HeroCard(modifier = modifier) {
+    HeroCard(
+        modifier = modifier.semantics(mergeDescendants = true) {},
+    ) {
         Text(
             text = "Keuntungan Hari Ini",
             style = MaterialTheme.typography.titleMedium,
@@ -49,7 +51,7 @@ fun ProfitHeroCard(
                     Text(
                         text = "${if (isPositive) "+" else ""}${percentChange.toInt()}%",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.labelSmall,
                     )
                 }
