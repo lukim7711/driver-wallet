@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.model.TransactionType
 import com.driverwallet.app.core.ui.component.AmountText
 import com.driverwallet.app.core.ui.component.CategoryIcon
-import com.driverwallet.app.core.ui.theme.ExpenseRed
-import com.driverwallet.app.core.ui.theme.IncomeGreen
 import com.driverwallet.app.shared.domain.model.Transaction
 
 @Composable
@@ -79,7 +77,11 @@ private fun TransactionItem(transaction: Transaction) {
         AmountText(
             amount = transaction.amount,
             style = MaterialTheme.typography.bodyMedium,
-            color = if (transaction.type == TransactionType.INCOME) IncomeGreen else ExpenseRed,
+            color = if (transaction.type == TransactionType.INCOME) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            },
             prefix = if (transaction.type == TransactionType.INCOME) "+Rp " else "-Rp ",
         )
     }

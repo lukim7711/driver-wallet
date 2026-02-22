@@ -12,13 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.component.AmountText
 import com.driverwallet.app.core.ui.component.HeroCard
-import com.driverwallet.app.core.ui.theme.ExpenseRed
 import com.driverwallet.app.core.ui.theme.HeroAmountStyle
-import com.driverwallet.app.core.ui.theme.IncomeGreen
 
 @Composable
 fun ProfitHeroCard(
@@ -44,12 +41,20 @@ fun ProfitHeroCard(
                 val isPositive = percentChange >= 0
                 Surface(
                     shape = RoundedCornerShape(50),
-                    color = if (isPositive) IncomeGreen else ExpenseRed,
+                    color = if (isPositive) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.error
+                    },
                 ) {
                     Text(
                         text = "${if (isPositive) "+" else ""}${percentChange.toInt()}%",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                        color = Color.White,
+                        color = if (isPositive) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.onError
+                        },
                         style = MaterialTheme.typography.labelSmall,
                     )
                 }

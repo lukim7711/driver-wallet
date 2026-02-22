@@ -2,18 +2,96 @@ package com.driverwallet.app.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Light Theme
-val Purple40 = Color(0xFF6650A4)
-val PurpleGrey40 = Color(0xFF625B71)
-val Pink40 = Color(0xFF7D5260)
+// =========================================
+// Financial Light Palette (pre-Android 12)
+// =========================================
+val FinancePrimaryLight = Color(0xFF1B6B3F)           // Forest green (profit/positive)
+val FinanceOnPrimaryLight = Color(0xFFFFFFFF)
+val FinancePrimaryContainerLight = Color(0xFFA7F5C5)  // Light mint
+val FinanceOnPrimaryContainerLight = Color(0xFF002110)
 
-// Dark Theme
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val FinanceSecondaryLight = Color(0xFF4A6572)         // Steel blue (neutral info)
+val FinanceOnSecondaryLight = Color(0xFFFFFFFF)
+val FinanceSecondaryContainerLight = Color(0xFFCDE5F0)
+val FinanceOnSecondaryContainerLight = Color(0xFF051F2C)
 
-// Semantic Colors
+val FinanceTertiaryLight = Color(0xFF7B5800)          // Amber (warnings/debt)
+val FinanceOnTertiaryLight = Color(0xFFFFFFFF)
+val FinanceTertiaryContainerLight = Color(0xFFFFDEA6)
+val FinanceOnTertiaryContainerLight = Color(0xFF261A00)
+
+val FinanceErrorLight = Color(0xFFC62828)             // Red (loss/overdue)
+val FinanceOnErrorLight = Color(0xFFFFFFFF)
+val FinanceErrorContainerLight = Color(0xFFFFDAD6)
+val FinanceOnErrorContainerLight = Color(0xFF410002)
+
+val FinanceBackgroundLight = Color(0xFFFBFDF8)
+val FinanceOnBackgroundLight = Color(0xFF191C19)
+val FinanceSurfaceLight = Color(0xFFFBFDF8)
+val FinanceOnSurfaceLight = Color(0xFF191C19)
+val FinanceSurfaceVariantLight = Color(0xFFDCE5DB)
+val FinanceOnSurfaceVariantLight = Color(0xFF414941)
+val FinanceOutlineLight = Color(0xFF717971)
+
+// =========================================
+// Financial Dark Palette (pre-Android 12)
+// =========================================
+val FinancePrimaryDark = Color(0xFF8CD9AA)            // Mint green
+val FinanceOnPrimaryDark = Color(0xFF00391E)
+val FinancePrimaryContainerDark = Color(0xFF00522E)
+val FinanceOnPrimaryContainerDark = Color(0xFFA7F5C5)
+
+val FinanceSecondaryDark = Color(0xFFB1C9D4)          // Sky blue
+val FinanceOnSecondaryDark = Color(0xFF1C3440)
+val FinanceSecondaryContainerDark = Color(0xFF334B58)
+val FinanceOnSecondaryContainerDark = Color(0xFFCDE5F0)
+
+val FinanceTertiaryDark = Color(0xFFF5BF48)           // Gold amber
+val FinanceOnTertiaryDark = Color(0xFF412D00)
+val FinanceTertiaryContainerDark = Color(0xFF5D4200)
+val FinanceOnTertiaryContainerDark = Color(0xFFFFDEA6)
+
+val FinanceErrorDark = Color(0xFFFFB4AB)
+val FinanceOnErrorDark = Color(0xFF690005)
+val FinanceErrorContainerDark = Color(0xFF93000A)
+val FinanceOnErrorContainerDark = Color(0xFFFFDAD6)
+
+val FinanceBackgroundDark = Color(0xFF191C19)
+val FinanceOnBackgroundDark = Color(0xFFE1E3DD)
+val FinanceSurfaceDark = Color(0xFF191C19)
+val FinanceOnSurfaceDark = Color(0xFFE1E3DD)
+val FinanceSurfaceVariantDark = Color(0xFF414941)
+val FinanceOnSurfaceVariantDark = Color(0xFFC0C9BF)
+val FinanceOutlineDark = Color(0xFF8B938A)
+
+// =========================================
+// Legacy Semantic Colors
+// Kept for backward compatibility with files
+// outside dashboard that still import these.
+// TODO: migrate remaining consumers to MaterialTheme tokens
+// =========================================
+@Deprecated("Use MaterialTheme.colorScheme.primary instead", ReplaceWith("MaterialTheme.colorScheme.primary"))
 val IncomeGreen = Color(0xFF2E7D32)
+
+@Deprecated("Use MaterialTheme.colorScheme.error instead", ReplaceWith("MaterialTheme.colorScheme.error"))
 val ExpenseRed = Color(0xFFC62828)
+
+@Deprecated("Use MaterialTheme.colorScheme.tertiary instead", ReplaceWith("MaterialTheme.colorScheme.tertiary"))
 val DebtOrange = Color(0xFFEF6C00)
+
+@Deprecated("Use MaterialTheme.colorScheme.secondary instead", ReplaceWith("MaterialTheme.colorScheme.secondary"))
 val BalanceBlue = Color(0xFF1565C0)
+
+// Legacy template colors (keep for any lingering references)
+@Deprecated("Use FinancePrimaryLight instead")
+val Purple40 = Color(0xFF6650A4)
+@Deprecated("Use FinanceSecondaryLight instead")
+val PurpleGrey40 = Color(0xFF625B71)
+@Deprecated("Use FinanceTertiaryLight instead")
+val Pink40 = Color(0xFF7D5260)
+@Deprecated("Use FinancePrimaryDark instead")
+val Purple80 = Color(0xFFD0BCFF)
+@Deprecated("Use FinanceSecondaryDark instead")
+val PurpleGrey80 = Color(0xFFCCC2DC)
+@Deprecated("Use FinanceTertiaryDark instead")
+val Pink80 = Color(0xFFEFB8C8)

@@ -22,8 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.component.AmountText
-import com.driverwallet.app.core.ui.theme.ExpenseRed
-import com.driverwallet.app.core.ui.theme.IncomeGreen
 
 @Composable
 fun IncomeExpenseRow(
@@ -38,13 +36,27 @@ fun IncomeExpenseRow(
         SummaryCard(
             label = "Masuk",
             amount = income,
-            icon = { Icon(Icons.Outlined.ArrowDownward, contentDescription = "Pemasukan", tint = IncomeGreen, modifier = Modifier.size(20.dp)) },
+            icon = {
+                Icon(
+                    Icons.Outlined.ArrowDownward,
+                    contentDescription = "Pemasukan",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp),
+                )
+            },
             modifier = Modifier.weight(1f),
         )
         SummaryCard(
             label = "Keluar",
             amount = expense,
-            icon = { Icon(Icons.Outlined.ArrowUpward, contentDescription = "Pengeluaran", tint = ExpenseRed, modifier = Modifier.size(20.dp)) },
+            icon = {
+                Icon(
+                    Icons.Outlined.ArrowUpward,
+                    contentDescription = "Pengeluaran",
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(20.dp),
+                )
+            },
             modifier = Modifier.weight(1f),
         )
     }

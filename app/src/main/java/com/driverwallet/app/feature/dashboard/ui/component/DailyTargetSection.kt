@@ -16,11 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.driverwallet.app.core.ui.component.AppProgressBar
-import com.driverwallet.app.core.ui.theme.ExpenseRed
-import com.driverwallet.app.core.ui.theme.IncomeGreen
 import com.driverwallet.app.core.util.CurrencyFormatter
 import com.driverwallet.app.feature.dashboard.domain.model.DailyTarget
 
@@ -42,12 +39,20 @@ fun DailyTargetSection(
                 Text("Target Harian", style = MaterialTheme.typography.titleSmall)
                 Surface(
                     shape = RoundedCornerShape(50),
-                    color = if (dailyTarget.isOnTrack) IncomeGreen else ExpenseRed,
+                    color = if (dailyTarget.isOnTrack) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.error
+                    },
                 ) {
                     Text(
                         text = if (dailyTarget.isOnTrack) "ON TRACK" else "OFF TRACK",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                        color = Color.White,
+                        color = if (dailyTarget.isOnTrack) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.onError
+                        },
                         style = MaterialTheme.typography.labelSmall,
                     )
                 }
